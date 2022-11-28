@@ -1,99 +1,130 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header_2 from "../components/globalComponents/Header_2";
 // assets
 import frame from "../assets/img/secondaryLayoutPage/frame.png";
+import { useParams } from "react-router-dom";
+// recoil
+import { useRecoilState } from "recoil";
+import currentCallPathAtom from "../recoil/helpers/currentCallPathAtom";
+import axios from "axios";
 
 const SecondaryLayout_1 = () => {
+  // global variables
+  const [currentCallPath] = useRecoilState(currentCallPathAtom);
+  // Local variables
   const [activeTab, setActiveTab] = useState(0);
-  const pageData = {
-    banner: {
-      heading: "Sri Ramanuja Public and Educational Charitable Trust ",
-      image: "",
-    },
+  const [pageData, setPageData] = useState(null);
 
-    content: {
-      title: "Sri Vanamahachala Vidhya Peetam",
-      sub_title: "Vedha Patasala at Srirangam",
-      image: "",
-      tab_data: [
-        {
-          name: "Details",
-          content: [
-            {
-              data: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium. Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.",
-              type: "text",
-            },
-            {
-              data: "/image-path",
-              type: "image",
-            },
+  const parameters = useParams();
 
-            {
-              data: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur labore mollitia ratione autem delectus dolor sint, voluptatibus unde voluptas a. Ad iste rerum necessitatibus, quis id a voluptates error! A illo labore, consequatur blanditiis odit quos nihil minus quod porro, doloribus asperiores, iste provident possimus error accusantium ratione molestias quas.",
-              type: "image",
-            },
-          ],
-        },
+  // const pageData = {
+  //   banner: {
+  //     heading: "Sri Ramanuja Public and Educational Charitable Trust ",
+  //     image: "",
+  //   },
 
-        {
-          name: "History",
-          content: [
-            {
-              data: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium. e ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.",
-              type: "text",
-            },
-            {
-              data: "/image-path",
-              type: "image",
-            },
+  //   content: {
+  //     title: "Sri Vanamahachala Vidhya Peetam",
+  //     sub_title: "Vedha Patasala at Srirangam",
+  //     image: "",
+  //   },
 
-            {
-              data: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur labore mollitia ratione autem delectus dolor sint, voluptatibus unde voluptas a. Ad iste rerum necessitatibus, quis id a voluptates error! A illo labore, consequatur blanditiis odit quos nihil minus quod porro, doloribus asperiores, iste provident possimus error accusantium ratione molestias quas.",
-              type: "image",
-            },
-          ],
-        },
+  //   tab_data: [
+  //     {
+  //       name: "Details",
+  //       content: [
+  //         {
+  //           data: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium. Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.",
+  //           type: "text",
+  //         },
+  //         {
+  //           data: "/image-path",
+  //           type: "image",
+  //         },
 
-        {
-          name: "Uthsavams",
-          content: [
-            {
-              data: "      Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.",
-              type: "text",
-            },
-            {
-              data: "/image-path",
-              type: "image",
-            },
+  //         {
+  //           data: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur labore mollitia ratione autem delectus dolor sint, voluptatibus unde voluptas a. Ad iste rerum necessitatibus, quis id a voluptates error! A illo labore, consequatur blanditiis odit quos nihil minus quod porro, doloribus asperiores, iste provident possimus error accusantium ratione molestias quas.",
+  //           type: "image",
+  //         },
+  //       ],
+  //     },
 
-            {
-              data: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur labore mollitia ratione autem delectus dolor sint, voluptatibus unde voluptas a. Ad iste rerum necessitatibus, quis id a voluptates error! A illo labore, consequatur blanditiis odit quos nihil minus quod porro, doloribus asperiores, iste provident possimus error accusantium ratione molestias quas.",
-              type: "image",
-            },
-          ],
-        },
+  //     {
+  //       name: "History",
+  //       content: [
+  //         {
+  //           data: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium. e ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.",
+  //           type: "text",
+  //         },
+  //         {
+  //           data: "/image-path",
+  //           type: "image",
+  //         },
 
-        {
-          name: "How to Reach",
-          content: [
-            {
-              data: "      Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit",
-              type: "text",
-            },
-            {
-              data: "/image-path",
-              type: "image",
-            },
+  //         {
+  //           data: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur labore mollitia ratione autem delectus dolor sint, voluptatibus unde voluptas a. Ad iste rerum necessitatibus, quis id a voluptates error! A illo labore, consequatur blanditiis odit quos nihil minus quod porro, doloribus asperiores, iste provident possimus error accusantium ratione molestias quas.",
+  //           type: "image",
+  //         },
+  //       ],
+  //     },
 
-            {
-              data: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur labore mollitia ratione autem delectus dolor sint, voluptatibus unde voluptas a. Ad iste rerum necessitatibus, quis id a voluptates error! A illo labore, consequatur blanditiis odit quos nihil minus quod porro, doloribus asperiores, iste provident possimus error accusantium ratione molestias quas.",
-              type: "image",
-            },
-          ],
-        },
-      ],
-    },
-  };
+  //     {
+  //       name: "Uthsavams",
+  //       content: [
+  //         {
+  //           data: "      Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.",
+  //           type: "text",
+  //         },
+  //         {
+  //           data: "/image-path",
+  //           type: "image",
+  //         },
+
+  //         {
+  //           data: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur labore mollitia ratione autem delectus dolor sint, voluptatibus unde voluptas a. Ad iste rerum necessitatibus, quis id a voluptates error! A illo labore, consequatur blanditiis odit quos nihil minus quod porro, doloribus asperiores, iste provident possimus error accusantium ratione molestias quas.",
+  //           type: "image",
+  //         },
+  //       ],
+  //     },
+
+  //     {
+  //       name: "How to Reach",
+  //       content: [
+  //         {
+  //           data: "      Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit quasi illo praesentium. Sit nam non distinctio exercitationem, quaerat reiciendis illo molestias. Deleniti ipsum odit cum laudantium.  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet quo ipsam accusantium molestias nobis perspiciatis sapiente ipsa eveniet dolore cupiditate at adipisci non omnis expedita, qui error repudiandae magnam enim quisquam tempora reprehenderit",
+  //           type: "text",
+  //         },
+  //         {
+  //           data: "/image-path",
+  //           type: "image",
+  //         },
+
+  //         {
+  //           data: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur labore mollitia ratione autem delectus dolor sint, voluptatibus unde voluptas a. Ad iste rerum necessitatibus, quis id a voluptates error! A illo labore, consequatur blanditiis odit quos nihil minus quod porro, doloribus asperiores, iste provident possimus error accusantium ratione molestias quas.",
+  //           type: "image",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
+
+  useEffect(() => {
+    console.log("layout 1 parameters changed:");
+    console.log(parameters);
+  }, [parameters]);
+
+  useEffect(() => {
+    axios
+      .post(import.meta.env.VITE_BASE_LINK + parameters?.call_link, {
+        id: parameters?.page_id,
+      })
+      .then(function (response) {
+        setPageData(response?.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [parameters]);
 
   return (
     <section>
@@ -129,7 +160,7 @@ const SecondaryLayout_1 = () => {
 
             <div className="md:w-full ">
               <div className="bg-[#FF9D80] flex md:rounded-bl-3xl">
-                {pageData?.content?.tab_data?.map((data, index) => {
+                {pageData?.tab_data?.map((data, index) => {
                   return (
                     <button
                       key={index}
@@ -149,7 +180,7 @@ const SecondaryLayout_1 = () => {
               </div>
               <div className="font-caladea sm:text-lg xl:text-xl pt-10 w-[90%] mx-auto md:w-full ">
                 <p className="  md:w-[93%]">
-                  {pageData?.content?.tab_data[activeTab]?.content[0]?.data}
+                  {pageData?.tab_data[activeTab]?.content[0]?.data}
                 </p>
               </div>
             </div>

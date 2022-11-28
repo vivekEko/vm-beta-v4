@@ -28,7 +28,6 @@ const Landing = () => {
     axios
       .get(import.meta.env.VITE_BASE_LINK + "landingPage")
       .then(function (response) {
-        console.log(response?.data);
         setLandingPageData(response?.data);
       })
       .catch(function (error) {
@@ -36,10 +35,10 @@ const Landing = () => {
       });
   }, []);
 
-  useEffect(() => {
-    console.log("landingPageData");
-    console.log(landingPageData);
-  }, [landingPageData]);
+  // useEffect(() => {
+  //   console.log("landingPageData");
+  //   console.log(landingPageData);
+  // }, [landingPageData]);
 
   return (
     <div className="">

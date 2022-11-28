@@ -87,12 +87,12 @@ const nav_data = [
         sub_link_path: "/sub_page/vanamamalai_mutt_branches/srirangam",
       },
       {
-        sub_link_name: "Sriperumbuthur        ",
+        sub_link_name: "Sriperumbuthur",
         sub_link_path:
           "/sub_page/vanamamalai_mutt_branches/sriperumbuthur        ",
       },
       {
-        sub_link_name: "Thiruvallikeni        ",
+        sub_link_name: "Thiruvallikeni",
         sub_link_path:
           "/sub_page/vanamamalai_mutt_branches/thiruvallikeni        ",
       },

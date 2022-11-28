@@ -67,7 +67,31 @@ const Section = (props) => {
           id="landing_page_2"
           className="bg-[#FC8D0B]  pt-20 border-b-[12px] border-[#942200] md:snap-start md:snap-always h-screen"
         >
-          <div className="flex flex-col justify-between h-full"></div>
+          <div className="flex flex-col gap-5 justify-between h-full">
+            <div>
+              <h1 className="uppercase text-[#191689] text-[1.4rem] sm:text-[1.6rem] lg:text-3xl xl:text-5xl  font-semibold text-center">
+                {props?.apiData?.h1}
+              </h1>
+              <h2 className="uppercase text-[#191689] text-xl text-center my-5 w-[80%] mx-auto  sm:text-lg lg:text-xl xl:text-2xl ">
+                {props?.apiData?.h2}
+              </h2>
+            </div>
+
+            <div>
+              <img
+                src={import.meta.env.VITE_BASE_LINK + props?.apiData?.img[0]}
+                alt=""
+                className="mx-auto"
+              />
+            </div>
+
+            <p
+              className="font-caladea pb-10 w-[80%] 
+            mx-auto mb-5 sm:text-lg xl:text-xl text-justify"
+            >
+              {props?.apiData?.p}
+            </p>
+          </div>
         </section>
       )}
       {/*  */}

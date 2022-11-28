@@ -22,7 +22,7 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    console.log("changed path", location);
+    console.log(location?.pathname);
     setCurrentPath(location);
   }, [location]);
 
@@ -39,7 +39,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route
-            path="/sub_page/:main_page_name/:sub_page_name"
+            path="/sub_page/:call_link/:page_id"
             element={<SecondaryLayout_1 />}
           />
           <Route path="/gallery" element={<SecondaryLayout_2 />} />

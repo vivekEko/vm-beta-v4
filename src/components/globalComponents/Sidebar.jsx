@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 //  state manegaement (recoil js)
 import { useRecoilState } from "recoil";
@@ -7,6 +7,7 @@ import sidebarStatusAtom from "../../recoil/sidebar/sidebarStatusAtom";
 
 // assets
 import down_arrow from "../../assets/img/sidebar/down-arrow-icon.svg";
+import axios from "axios";
 
 const Sidebar = () => {
   // Global variables
@@ -15,96 +16,111 @@ const Sidebar = () => {
 
   // local variables
   const [openedLink, setOpenedLink] = useState(null);
-  const sidebarData = [
-    {
-      main_link: {
-        link_name: "Home",
-        link_path: "/",
-      },
+  const [sidebarData, setSidebarData] = useState(null);
+  // const sidebarData = [
+  //   {
+  //     main_link: {
+  //       link_name: "Home",
+  //       link_path: "/",
+  //     },
 
-      sub_links: [
-        {
-          sub_link_name: "Level 1",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 2",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 3",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 4",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 5",
-          sub_link_path: "/",
-        },
-      ],
-    },
-    {
-      main_link: {
-        link_name: "layout 1",
-        link_path: "/sample_page",
-      },
+  //     sub_links: [
+  //       {
+  //         sub_link_name: "Level 1",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 2",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 3",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 4",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 5",
+  //         sub_link_path: "/",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     main_link: {
+  //       link_name: "layout 1",
+  //       link_path: "/sample_page",
+  //     },
 
-      sub_links: [
-        {
-          sub_link_name: "Level 1",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 2",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 3",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 4",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 5",
-          sub_link_path: "/",
-        },
-      ],
-    },
-    {
-      main_link: {
-        link_name: "layout 2",
-        link_path: "/albums",
-      },
+  //     sub_links: [
+  //       {
+  //         sub_link_name: "Level 1",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 2",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 3",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 4",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 5",
+  //         sub_link_path: "/",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     main_link: {
+  //       link_name: "layout 2",
+  //       link_path: "/albums",
+  //     },
 
-      sub_links: [
-        {
-          sub_link_name: "Level 1",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 2",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 3",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 4",
-          sub_link_path: "/",
-        },
-        {
-          sub_link_name: "Level 5",
-          sub_link_path: "/",
-        },
-      ],
-    },
-  ];
+  //     sub_links: [
+  //       {
+  //         sub_link_name: "Level 1",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 2",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 3",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 4",
+  //         sub_link_path: "/",
+  //       },
+  //       {
+  //         sub_link_name: "Level 5",
+  //         sub_link_path: "/",
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_BASE_LINK + "sideBar")
+      .then(function (response) {
+        console.log(response?.data);
+        setSidebarData(response?.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
   // Detect outside click and close sidebar
+
   window.addEventListener("click", (event) => {
     const sidebar = document?.getElementById("sidebar");
 
@@ -202,7 +218,7 @@ const Sidebar = () => {
         <div
           className={` ${
             currentPath?.pathname === "/" ? "mt-[7.5rem]" : "mt-20"
-          } min-w-[200px] `}
+          } min-w-[300px] `}
         >
           {/* sidebar links container */}
           {sidebarData?.map((data, index) => {
@@ -215,12 +231,20 @@ const Sidebar = () => {
                     : ""
                 }  pl-2 overflow-y-hidden`}
               >
-                <div className="flex justify-between items-center ">
+                <div className="flex justify-between items-center  ">
                   {/* main links */}
                   <NavLink
                     to={data?.main_link?.link_path}
-                    className={({ isActive }) =>
-                      isActive ? "opacity-100" : "opacity-50"
+                    // className={({ isActive }) =>
+                    //   isActive ? "opacity-100" : "opacity-50"
+                    // }
+                    className={` ${data?.sub_links?.map((data, index) => {
+                      data?.sub_link_path?.includes(currentPath?.pathname)
+                        ? console.log("yess")
+                        : console.log("noooo");
+                    })} `}
+                    onClick={() =>
+                      console.log(" clicked on:", data?.main_link?.link_path)
                     }
                   >
                     <button
@@ -270,11 +294,13 @@ const Sidebar = () => {
                 >
                   {data?.sub_links?.map((sub_data, sub_index) => {
                     return (
-                      <button key={sub_index} className="block">
-                        <h1 className="text-white py-3 pl-16 uppercase">
-                          {sub_data?.sub_link_name}
-                        </h1>
-                      </button>
+                      <Link key={sub_index} to={sub_data?.sub_link_path}>
+                        <button className="block  w-full text-left">
+                          <h1 className="text-white py-3 pl-16 uppercase">
+                            {sub_data?.sub_link_name}
+                          </h1>
+                        </button>
+                      </Link>
                     );
                   })}
                 </div>
