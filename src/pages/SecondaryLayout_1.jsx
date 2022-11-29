@@ -108,10 +108,10 @@ const SecondaryLayout_1 = () => {
   //   ],
   // };
 
-  useEffect(() => {
-    console.log("layout 1 parameters changed:");
-    console.log(parameters);
-  }, [parameters]);
+  // useEffect(() => {
+  //   console.log("layout 1 parameters changed:");
+  //   console.log(parameters);
+  // }, [parameters]);
 
   useEffect(() => {
     axios

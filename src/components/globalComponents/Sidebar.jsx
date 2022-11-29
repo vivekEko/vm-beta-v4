@@ -140,7 +140,7 @@ const Sidebar = () => {
           : currentPath?.pathname !== "/"
           ? "w-[0%] ease-out   min-w-[0px] md:w-[0.1%] md:min-w-[60px]"
           : "w-[0%] ease-out  min-w-[0px]"
-      } h-screen bg-[#FC8D0B] fixed top-0 bottom-0  max-w-[300px] transition-all duration-300  shadow-2xl  `}
+      } h-screen bg-[#FC8D0B] fixed top-0 bottom-0  max-w-[300px] transition-all duration-300  shadow-2xl z-[9999] `}
     >
       <div className=" overflow-x-hidden">
         {/* hamburger */}
@@ -238,14 +238,7 @@ const Sidebar = () => {
                     // className={({ isActive }) =>
                     //   isActive ? "opacity-100" : "opacity-50"
                     // }
-                    className={` ${data?.sub_links?.map((data, index) => {
-                      data?.sub_link_path?.includes(currentPath?.pathname)
-                        ? console.log("yess")
-                        : console.log("noooo");
-                    })} `}
-                    onClick={() =>
-                      console.log(" clicked on:", data?.main_link?.link_path)
-                    }
+                    className={` `}
                   >
                     <button
                       onClick={() => setSidebarStatus(false)}

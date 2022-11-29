@@ -52,6 +52,10 @@ function App() {
           <Route path="/albums" element={<SecondaryLayout_2 />} />
           <Route path="/albums_expanded" element={<SecondaryLayout_3 />} />
           <Route path="/album_details" element={<SecondaryLayout_4 />} />
+          <Route
+            path="/album/:album_id/:year_id"
+            element={<SecondaryLayout_4 />}
+          />
         </Routes>
       </div>
     </div>
