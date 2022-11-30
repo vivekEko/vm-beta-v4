@@ -235,10 +235,9 @@ const Sidebar = () => {
                   {/* main links */}
                   <NavLink
                     to={data?.main_link?.link_path}
-                    // className={({ isActive }) =>
-                    //   isActive ? "opacity-100" : "opacity-50"
-                    // }
-                    className={` `}
+                    className={({ isActive }) =>
+                      isActive ? "opacity-100" : "opacity-50"
+                    }
                   >
                     <button
                       onClick={() => setSidebarStatus(false)}

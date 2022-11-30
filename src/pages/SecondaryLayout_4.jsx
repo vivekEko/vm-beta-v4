@@ -7,10 +7,14 @@ import Header_2 from "../components/globalComponents/Header_2";
 import frame from "../assets/img/secondaryLayoutPage/frame.png";
 import leftArrow from "../assets/img/galleryPage/left_button.svg";
 import rightArrow from "../assets/img/galleryPage/right_button.svg";
+import closeIcon from "../assets/img/galleryPage/cross.svg";
+
+// routing
 import axios from "axios";
 
 const SecondaryLayout_4 = () => {
   const [pageData, setPageData] = useState(null);
+  const [selectedModal, setSelectedModal] = useState(false);
   const parameters = useParams();
 
   useEffect(() => {
@@ -112,7 +116,7 @@ const SecondaryLayout_4 = () => {
   // };
 
   return (
-    <section>
+    <section className="">
       {/* banner */}
       <div className="bg-[#D9D9D9] ">
         <Header_2 />
@@ -154,11 +158,75 @@ const SecondaryLayout_4 = () => {
           <div className="grid grid-cols-3 sm:grid-cols-4 2xl:grid-cols-5 justify-between w-full gap-2 sm:gap-4 md:gap-6 lg:gap-8  xl:gap-10 2xl:gap-12 py-10 ">
             {pageData?.content?.map((data, index) => {
               return (
-                <div key={index} className="flex-1 mb-2">
-                  <div className="aspect-square  bg-[#D9D9D9]"></div>
-                  <h1 className="text-center pt-2 text-lg  md:text-xl xl:text-2xl">
-                    {data?.sub_heading}
-                  </h1>
+                <div key={index} className="flex-1 mb-2 cursor-pointer">
+                  <div onClick={() => setSelectedModal(data?.sub_heading)}>
+                    <div className="aspect-square  bg-[#D9D9D9]"></div>
+                    <h1 className="text-center pt-2 text-lg  md:text-xl xl:text-2xl">
+                      {data?.sub_heading}
+                    </h1>
+                  </div>
+
+                  {selectedModal === data?.sub_heading && (
+                    <>
+                      <div
+                        className="bg-[#ffffffd2] inset-0 fixed z-[99999] "
+                        onClick={() => setSelectedModal(null)}
+                      ></div>
+
+                      <div className="  top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] fixed z-[100000] aspect-square flex justify-center items-center ">
+                        <div>
+                          <button
+                            onClick={() => setSelectedModal(null)}
+                            className="ml-auto block"
+                          >
+                            <img
+                              src={closeIcon}
+                              alt="close"
+                              className="ml-auto"
+                            />
+                          </button>
+                          <div className="bg-gray-400 w-[900px] aspect-video mx-auto"></div>
+                          <h1 className="my-3 uppercase text-2xl text-center">
+                            {" "}
+                            {data?.sub_heading}
+                          </h1>
+
+                          <p className="my-2 font-caladea text-justify">
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Id accusamus, dolorem modi quidem, quibusdam
+                            neque reiciendis praesentium culpa quisquam
+                            laboriosam numquam veritatis, saepe non? Debitis
+                            fugiat beatae fugit, optio asperiores quis et ab
+                            harum architecto deleniti saepe similique libero,
+                            neque, eius consequuntur. Nobis ex earum architecto
+                            et facilis hic odit quis molestias consequuntur
+                            itaque, accusamus odio tenetur iste eveniet qui eius
+                            unde! Sint blanditiis suscipit veritatis voluptates
+                            autem illum corrupti distinctio, repellat ab. Iure
+                            accusantium esse sequi velit atque, minima error sit
+                            inventore veritatis culpa, quibusdam commodi. Eaque
+                            dolorum optio fugiat nobis soluta nisi reprehenderit
+                            pariatur odio iste doloremque! Rem quisquam vel
+                            accusamus, inventore nihil animi voluptatibus
+                            fugiat? Consequuntur dolorem natus vel fugiat maxime
+                            voluptas quae eum nihil magnam totam. Distinctio
+                            illo magni earum temporibus dolorem nam, veritatis
+                            ipsum voluptates dignissimos. Recusandae facilis
+                            obcaecati dolorum a perferendis aut, in modi! Iusto
+                            ipsam rem, dignissimos maxime repellat eveniet nihil
+                            aperiam voluptates ad eum praesentium totam itaque.
+                            Veniam, iure? Quam commodi magnam vero voluptas,
+                            iure, perferendis similique deserunt accusantium,
+                            laboriosam obcaecati reiciendis quae excepturi hic
+                            maiores. Non quam praesentium accusamus. Esse
+                            aperiam accusamus sequi quaerat suscipit quos modi.
+                            Repellat, sunt mollitia ut officiis magni aliquid
+                            unde ducimus in, odio non id maiores?
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               );
             })}
