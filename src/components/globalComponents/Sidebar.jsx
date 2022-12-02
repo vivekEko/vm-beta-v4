@@ -8,6 +8,7 @@ import sidebarStatusAtom from "../../recoil/sidebar/sidebarStatusAtom";
 // assets
 import down_arrow from "../../assets/img/sidebar/down-arrow-icon.svg";
 import axios from "axios";
+import { VITE_BASE_LINK } from "../../base_link/BaseLink";
 
 const Sidebar = () => {
   // Global variables
@@ -225,7 +226,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_BASE_LINK + "sideBar")
+      .get(VITE_BASE_LINK + "sideBar")
       .then(function (response) {
         setSidebarData(response?.data);
       })

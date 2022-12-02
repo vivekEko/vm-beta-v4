@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import currentCallPathAtom from "../recoil/helpers/currentCallPathAtom";
 import axios from "axios";
+import { VITE_BASE_LINK } from "../base_link/BaseLink";
 
 const SecondaryLayout_1 = () => {
   // global variables
@@ -115,7 +116,7 @@ const SecondaryLayout_1 = () => {
 
   useEffect(() => {
     axios
-      .post(import.meta.env.VITE_BASE_LINK + parameters?.call_link, {
+      .post(VITE_BASE_LINK + parameters?.call_link, {
         id: parameters?.page_id,
       })
       .then(function (response) {

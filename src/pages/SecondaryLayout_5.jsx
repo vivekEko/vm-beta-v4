@@ -7,6 +7,7 @@ import Header_2 from "../components/globalComponents/Header_2";
 
 // routing
 import axios from "axios";
+import { VITE_BASE_LINK } from "../base_link/BaseLink";
 
 const SecondaryLayout_5 = () => {
   const [pageData, setPageData] = useState(null);
@@ -14,7 +15,7 @@ const SecondaryLayout_5 = () => {
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_BASE_LINK + "jeeyars")
+      .get(VITE_BASE_LINK + "jeeyars")
       .then(function (response) {
         setPageData(response?.data);
       })

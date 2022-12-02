@@ -18,6 +18,7 @@ import FifthSection from "../components/landingPage/FifthSection";
 import Footer from "../components/globalComponents/Footer";
 import EventSection from "../components/landingPage/EventSection";
 import Section from "../components/landingPage/Section";
+import { VITE_BASE_LINK } from "../base_link/BaseLink";
 
 const Landing = () => {
   // Global variables
@@ -26,7 +27,7 @@ const Landing = () => {
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_BASE_LINK + "landingPage")
+      .get(VITE_BASE_LINK + "landingPage")
       .then(function (response) {
         setLandingPageData(response?.data);
       })

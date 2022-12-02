@@ -11,6 +11,7 @@ import closeIcon from "../assets/img/galleryPage/cross.svg";
 
 // routing
 import axios from "axios";
+import { VITE_BASE_LINK } from "../base_link/BaseLink";
 
 const SecondaryLayout_4 = () => {
   const [pageData, setPageData] = useState(null);
@@ -19,7 +20,7 @@ const SecondaryLayout_4 = () => {
 
   useEffect(() => {
     axios
-      .post(import.meta.env.VITE_BASE_LINK + "sub_album_page", {
+      .post(VITE_BASE_LINK + "sub_album_page", {
         sub_album_name: parameters?.year,
         album_id: parameters?.album,
       })
@@ -135,13 +136,13 @@ const SecondaryLayout_4 = () => {
 
       {/* album banner */}
 
-      <div className="flex my-10 mx-auto w-[90%] ">
-        <div className="flex justify-center items-center ">
+      <div className="flex my-10 mx-auto w-[90%]">
+        <div className="flex justify-center items-center">
           <img src={leftArrow} alt="previous" />
         </div>
         <div className="flex-1">
           <div className="max-w-[600px] mx-auto">
-            <div className="h-[350px] bg-gray-200 "></div>
+            <div className="h-[350px] bg-gray-200"></div>
             <p className="pt-10 font-caladea"> {pageData?.album_banner?.p} </p>
           </div>
         </div>
@@ -173,7 +174,7 @@ const SecondaryLayout_4 = () => {
                         onClick={() => setSelectedModal(null)}
                       ></div>
 
-                      <div className="  top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] fixed z-[100000] aspect-square flex justify-center items-center ">
+                      <div className="top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] fixed z-[100000] aspect-square flex justify-center items-center ">
                         <div>
                           <button
                             onClick={() => setSelectedModal(null)}

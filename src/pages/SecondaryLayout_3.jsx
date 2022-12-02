@@ -4,6 +4,7 @@ import Header_2 from "../components/globalComponents/Header_2";
 import frame from "../assets/img/secondaryLayoutPage/frame.png";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { VITE_BASE_LINK } from "../base_link/BaseLink";
 
 const SecondaryLayout_3 = () => {
   // const pageData = {
@@ -102,7 +103,7 @@ const SecondaryLayout_3 = () => {
 
   useEffect(() => {
     axios
-      .post(import.meta.env.VITE_BASE_LINK + "all_sub_album_page", {
+      .post(VITE_BASE_LINK + "all_sub_album_page", {
         album_id: parameters?.album,
       })
       .then(function (response) {

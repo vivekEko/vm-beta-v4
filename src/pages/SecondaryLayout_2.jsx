@@ -13,6 +13,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
+import { VITE_BASE_LINK } from "../base_link/BaseLink";
 
 const SecondaryLayout_2 = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -168,7 +169,7 @@ const SecondaryLayout_2 = () => {
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_BASE_LINK + "gallery_page")
+      .get(VITE_BASE_LINK + "gallery_page")
       .then(function (response) {
         console.log("gallery2 responsetala:", response?.data);
         setPageData(response?.data);

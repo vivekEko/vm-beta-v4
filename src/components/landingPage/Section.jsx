@@ -6,6 +6,7 @@ import scroll_icon from "../../assets/img/landingPage/scroll_icon.png";
 import youtube_icon from "../../assets/img/landingPage/youtube_icon.png";
 import file_icon from "../../assets/img/landingPage/file_icon.png";
 import { HashRouter } from "react-router-dom";
+import { VITE_BASE_LINK } from "../../base_link/BaseLink";
 
 const Section = (props) => {
   return (
@@ -41,7 +42,7 @@ const Section = (props) => {
                       return (
                         <img
                           key={imgIndex}
-                          src={import.meta.env.VITE_BASE_LINK + imgData}
+                          src={VITE_BASE_LINK + imgData}
                           alt={imgData}
                           className="mx-auto w-full max-w-[500px] 2xl:max-w-[550px]"
                         />
@@ -79,7 +80,7 @@ const Section = (props) => {
 
             <div>
               <img
-                src={import.meta.env.VITE_BASE_LINK + props?.apiData?.img[0]}
+                src={VITE_BASE_LINK + props?.apiData?.img[0]}
                 alt=""
                 className="mx-auto"
               />
@@ -127,7 +128,7 @@ const Section = (props) => {
                   return (
                     <div key={imgIndex} className="w-full">
                       <img
-                        src={import.meta.env.VITE_BASE_LINK + imgData}
+                        src={VITE_BASE_LINK + imgData}
                         alt={imgData}
                         className="w-full"
                       />
@@ -194,7 +195,7 @@ const Section = (props) => {
                 return (
                   <img
                     key={imgIndex}
-                    src={import.meta.env.VITE_BASE_LINK + imgData}
+                    src={VITE_BASE_LINK + imgData}
                     alt={imgData}
                     className="translate-y-2 md:translate-y-5  w-full"
                   />
@@ -264,7 +265,7 @@ const Section = (props) => {
               return (
                 <img
                   key={imgIndex}
-                  src={import.meta.env.VITE_BASE_LINK + imgData}
+                  src={VITE_BASE_LINK + imgData}
                   alt={imgData}
                   className="mx-auto w-full max-w-[500px] xl:max-w-[600px] object-contain"
                 />
