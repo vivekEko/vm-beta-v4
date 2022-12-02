@@ -16,6 +16,7 @@ import SecondaryLayout_1 from "./pages/SecondaryLayout_1";
 import SecondaryLayout_2 from "./pages/SecondaryLayout_2";
 import SecondaryLayout_3 from "./pages/SecondaryLayout_3";
 import SecondaryLayout_4 from "./pages/SecondaryLayout_4";
+import SecondaryLayout_5 from "./pages/SecondaryLayout_5";
 
 function App() {
   const [currentPath, setCurrentPath] = useRecoilState(currentPathAtom);
@@ -49,7 +50,7 @@ function App() {
             path="/album/:album_id/:year_id"
             element={<SecondaryLayout_4 />}
           />
-          <Route path="/jeeyars" element={<SecondaryLayout_3 />} />
+          <Route path="/jeeyars" element={<SecondaryLayout_5 />} />
 
           {/* Old paths */}
           {/* <Route path="/sample_page" element={<SecondaryLayout_1 />} />

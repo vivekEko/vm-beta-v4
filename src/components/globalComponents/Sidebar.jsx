@@ -17,6 +17,7 @@ const Sidebar = () => {
   // local variables
   const [openedLink, setOpenedLink] = useState(null);
   const [sidebarData, setSidebarData] = useState(null);
+  const [activeLink, setActiveLink] = useState(null);
   // const sidebarData = [
   //   {
   //     main_link: {
@@ -107,11 +108,125 @@ const Sidebar = () => {
   //   },
   // ];
 
+  // const localResponse = [
+  //   {
+  //       "main_link": {
+  //           "link_name": "Home",
+  //           "link_path": "/"
+  //       }
+  //   },
+  //   {
+  //       "main_link": {
+  //           "link_name": "Vanamamalai Temple",
+  //           "link_path": "/sub_page/vn_temple/1"
+  //       },
+  //       "sub_links": [
+  //           {
+  //               "id": 1,
+  //               "sub_link_name": "TEMPLE HISTORY",
+  //               "sub_link_path": "/sub_page/vn_temple/1"
+  //           },
+  //           {
+  //               "id": 2,
+  //               "sub_link_name": "Moolavar - Vanamamalai",
+  //               "sub_link_path": "/sub_page/vn_temple/2"
+  //           }
+  //       ]
+  //   },
+  //   {
+  //     "main_link": {
+  //         "link_name": "Other Temple",
+  //         "link_path": "/sub_page/other_temple/1"
+  //     },
+  //     "sub_links": [
+  //         {
+  //             "id": 1,
+  //             "sub_link_name": "Mela Thiruvengadamudyaan",
+  //             "sub_link_path": "/sub_page/other_temple/1"
+  //         },
+  //         {
+  //             "id": 2,
+  //             "sub_link_name": "Therku Thiruvengadamudayan",
+  //             "sub_link_path": "/sub_page/other_temple/2"
+  //         },
+  //         {
+  //           "id": 3,
+  //           "sub_link_name": "Nadhipura Vinnagaram",
+  //           "sub_link_path": "/sub_page/other_temple/3"
+  //       }
+  //     ]
+  // },
+
+  // {
+  //   "main_link": {
+  //       "link_name": "Branches",
+  //       "link_path": "/sub_page/branches/1"
+  //   },
+  //   "sub_links": [
+  //       {
+  //           "id": 1,
+  //           "sub_link_name": " Vanamamalai (nanguneri)",
+  //           "sub_link_path": "/sub_page/branches/1"
+  //       },
+  //       {
+  //           "id": 2,
+  //           "sub_link_name": "Mannarkudi",
+  //           "sub_link_path": "/sub_page/branches/2"
+  //       },
+  //       {
+  //         "id": 3,
+  //         "sub_link_name": "Kanchipuram",
+  //         "sub_link_path": "/sub_page/branches/3"
+  //     }
+  //   ]
+  // },
+
+  // {
+  //   "main_link": {
+  //       "link_name": "Ponnadikkal Jeeyar",
+  //       "link_path": "/ponnadikkal_jeeyar"
+  //   },
+
+  // },
+
+  // {
+  //   "main_link": {
+  //       "link_name": "Vanamamalai Education",
+  //       "link_path": "/sub_page/vn_education/1"
+  //   },
+  //   "sub_links": [
+  //       {
+  //           "id": 1,
+  //           "sub_link_name": " Sri Vanachala Vidhya Peetam",
+  //           "sub_link_path": "/sub_page/vn_education/1"
+  //       },
+  //       {
+  //           "id": 2,
+  //           "sub_link_name": "Sri Ramanuja Matriculation",
+  //           "sub_link_path": "/sub_page/vn_education/2"
+  //       },
+
+  //   ]
+  // },
+
+  //   {
+  //       "main_link": {
+  //           "link_name": "Jeeyars",
+  //           "link_path": "/jeeyars"
+  //       }
+  //   },
+  //   {
+  //       "main_link": {
+  //           "link_name": "Gallery",
+  //           "link_path": "/gallery"
+  //       }
+  //   }
+  // ]
+
   useEffect(() => {
     axios
       .get(import.meta.env.VITE_BASE_LINK + "sideBar")
       .then(function (response) {
-        console.log(response?.data);
         setSidebarData(response?.data);
       })
       .catch(function (error) {
@@ -130,6 +245,12 @@ const Sidebar = () => {
       }
     }
   });
+
+  useEffect(() => {
+    if (sidebarStatus === false) {
+      setOpenedLink(null);
+    }
+  }, [sidebarStatus]);
 
   return (
     <div
@@ -236,7 +357,13 @@ const Sidebar = () => {
                   <NavLink
                     to={data?.main_link?.link_path}
                     className={({ isActive }) =>
-                      isActive ? "opacity-100" : "opacity-50"
+                      isActive
+                        ? "opacity-100"
+                        : ` ${
+                            openedLink?.includes(data?.main_link?.link_path)
+                              ? "opacity-100"
+                              : "opacity-50"
+                          } `
                     }
                   >
                     <button
@@ -255,32 +382,36 @@ const Sidebar = () => {
                     </button>
                   </NavLink>
 
-                  <div
-                    onClick={() => {
-                      if (openedLink === data?.main_link?.link_name) {
-                        setOpenedLink(null);
-                      } else {
-                        setOpenedLink(data?.main_link?.link_name);
+                  {data?.sub_links && (
+                    <div
+                      onClick={() => {
+                        if (openedLink === data?.main_link?.link_name) {
+                          setOpenedLink(null);
+                        } else {
+                          setOpenedLink(data?.main_link?.link_name);
+                        }
+                      }}
+                      className={
+                        "pr-5  flex-[0.1]  min-w-[50px] cursor-pointer"
                       }
-                    }}
-                    className="pr-5  flex-[0.1]  min-w-[50px] cursor-pointer"
-                  >
-                    <img
-                      src={down_arrow}
-                      alt="..."
-                      className={` ${
-                        openedLink === data?.main_link?.link_name
-                          ? "rotate-0"
-                          : "-rotate-90"
-                      } w-[15px]  transition-all h-full`}
-                    />
-                  </div>
+                    >
+                      <img
+                        src={down_arrow}
+                        alt="..."
+                        className={` ${
+                          openedLink === data?.main_link?.link_name
+                            ? "rotate-0"
+                            : "-rotate-90"
+                        } w-[15px]  transition-all h-full`}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div
                   className={` ${
-                    openedLink === data?.main_link?.link_name
-                      ? "max-h-[300px] ease-in duration-300 "
+                    openedLink?.includes(data?.main_link?.link_name)
+                      ? "max-h-[300px] ease-in duration-300  "
                       : "max-h-0 ease-out overflow-y-hidden duration-300"
                   } transition-all text-white   `}
                 >
@@ -288,7 +419,15 @@ const Sidebar = () => {
                     return (
                       <Link key={sub_index} to={sub_data?.sub_link_path}>
                         <button className="block  w-full text-left">
-                          <h1 className="text-white py-3 pl-16 uppercase">
+                          <h1
+                            className={` ${
+                              currentPath?.pathname?.includes(
+                                sub_data?.sub_link_path
+                              )
+                                ? "opacity-100"
+                                : "opacity-50"
+                            } text-white py-3 pl-16 uppercase`}
+                          >
                             {sub_data?.sub_link_name}
                           </h1>
                         </button>

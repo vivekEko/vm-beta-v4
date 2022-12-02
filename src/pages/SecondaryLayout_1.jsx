@@ -119,6 +119,7 @@ const SecondaryLayout_1 = () => {
         id: parameters?.page_id,
       })
       .then(function (response) {
+        console.log(response?.data);
         setPageData(response?.data);
       })
       .catch(function (error) {
