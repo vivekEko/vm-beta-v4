@@ -119,7 +119,7 @@ const SecondaryLayout_4 = () => {
   return (
     <section className="">
       {/* banner */}
-      <div className="bg-[#D9D9D9] ">
+      <div className="bg-[#D9D9D9]">
         <Header_2 />
 
         <div className="w-[90%] mx-auto">
@@ -143,7 +143,7 @@ const SecondaryLayout_4 = () => {
         <div className="flex-1">
           <div className="max-w-[600px] mx-auto">
             <div className="h-[350px] bg-gray-200"></div>
-            <p className="pt-10 font-caladea"> {pageData?.album_banner?.p} </p>
+            <p className="pt-10 font-caladea"> {pageData?.album_banner?.p}</p>
           </div>
         </div>
         <div className="flex justify-center items-center">

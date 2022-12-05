@@ -278,7 +278,7 @@ const SecondaryLayout_2 = () => {
             return (
               <div
                 key={mainIndex}
-                className="py-10 border-y-[#0000007a] border-t"
+                className="py-10 border-y-[#0000007a] border-t "
               >
                 <div className="flex justify-between items-center">
                   <h1 className="uppercase text-xl md:text-2xl xl:text-3xl">
