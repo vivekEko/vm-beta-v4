@@ -1,6 +1,6 @@
 // Routing
 import { useEffect } from "react";
-import { Routes, Route, useLocation, Link } from "react-router-dom";
+import { Routes, Route, useLocation, Link, Navigate } from "react-router-dom";
 //  state manegaement (recoil js)
 import { useRecoilState } from "recoil";
 import currentPathAtom from "./recoil/helpers/currentPathAtom";
@@ -17,6 +17,7 @@ import SecondaryLayout_2 from "./pages/SecondaryLayout_2";
 import SecondaryLayout_3 from "./pages/SecondaryLayout_3";
 import SecondaryLayout_4 from "./pages/SecondaryLayout_4";
 import SecondaryLayout_5 from "./pages/SecondaryLayout_5";
+import Login from "./pages/Login";
 
 function App() {
   const [currentPath, setCurrentPath] = useRecoilState(currentPathAtom);
@@ -29,15 +30,20 @@ function App() {
 
   return (
     <div className="font-oswald cursor-default">
-      <div>
+      <div
+        className={` ${currentPath?.pathname === "/login" ? "hidden" : " "} `}
+      >
         <Sidebar />
       </div>
       <div
         className={` ${
-          currentPath?.pathname === "/" ? "pl-[0px]" : "pl-0 md:pl-[60px] "
+          currentPath?.pathname === "/" || currentPath?.pathname === "/login"
+            ? "pl-[0px]"
+            : "pl-0 md:pl-[60px] "
         } `}
       >
         <Routes>
+          <Route path="*" element={<Navigate to="/" replace={true} />} />
           <Route path="/" element={<Landing />} />
           <Route
             path="/sub_page/:call_link/:page_id"
@@ -51,6 +57,7 @@ function App() {
             element={<SecondaryLayout_4 />}
           />
           <Route path="/jeeyars" element={<SecondaryLayout_5 />} />
+          <Route path="/login" element={<Login />} />
 
           {/* Old paths */}
           {/* <Route path="/sample_page" element={<SecondaryLayout_1 />} />
