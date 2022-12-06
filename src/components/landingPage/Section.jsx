@@ -16,7 +16,7 @@ const Section = (props) => {
           id={props?.apiData?.seq_no}
           className="md:snap-start md:snap-always overflow-y-hidden "
         >
-          <div className="bg-hero-image h-screen bg-fixed bg-center bg-no-repeat bg-cover border-b-[14px] border-b-[#942200] ">
+          <div className="bg-hero-image    md:h-screen bg-fixed bg-center bg-no-repeat bg-cover border-b-[14px] border-b-[#942200] ">
             <div className="h-full flex flex-col justify-between items-center">
               <Header />
               <div className="flex justify-between flex-col h-full">
@@ -66,7 +66,7 @@ const Section = (props) => {
       {props?.apiData?.layout === "event" && (
         <section
           id="landing_page_2"
-          className="bg-[#FC8D0B]  pt-20 border-b-[12px] border-[#942200] md:snap-start md:snap-always h-screen"
+          className="bg-[#FC8D0B]  pt-20 border-b-[12px] border-[#942200] md:snap-start md:snap-always min-h-screen"
         >
           <div className="flex flex-col gap-5 justify-between h-full">
             <div>
@@ -99,7 +99,7 @@ const Section = (props) => {
       {props?.apiData?.layout === "two_images" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#7CC0F1]  pt-20 border-b-[12px] border-[#942200] md:snap-start md:snap-always h-screen"
+          className="bg-[#7CC0F1]  pt-20 border-b-[12px] border-[#942200] md:snap-start md:snap-always md:h-screen"
         >
           <div className="flex flex-col justify-between h-full">
             <div>
@@ -126,7 +126,12 @@ const Section = (props) => {
               {props?.apiData?.img?.length > 0 &&
                 props?.apiData?.img?.map((imgData, imgIndex) => {
                   return (
-                    <div key={imgIndex} className="w-full">
+                    <div
+                      key={imgIndex}
+                      className={` ${
+                        imgIndex > 0 ? "hidden md:block" : ""
+                      }  w-full`}
+                    >
                       <img
                         src={VITE_BASE_LINK + imgData}
                         alt={imgData}
@@ -209,7 +214,7 @@ const Section = (props) => {
       {props?.apiData?.layout === "left_image" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#FFB507] pt-10 py-20 flex flex-col-reverse gap-5 min-h-screen md:flex-row-reverse border-b-[12px] border-[#942200] justify-between md:snap-start md:snap-always"
+          className="bg-[#FFB507] pt-10 py-20 flex flex-col-reverse gap-5 min-h-screen md:flex-row-reverse border-b-[12px] border-[#942200]  justify-between md:snap-start md:snap-always"
         >
           <div className="flex justify-between flex-col gap-5 flex-1  ">
             <div className="md:py-20">
