@@ -18,6 +18,9 @@ import SecondaryLayout_3 from "./pages/SecondaryLayout_3";
 import SecondaryLayout_4 from "./pages/SecondaryLayout_4";
 import SecondaryLayout_5 from "./pages/SecondaryLayout_5";
 import Login from "./pages/Login";
+import ProtectedRoutes from "./utils/routing/ProtectedRoutes";
+import AdminDashboard from "./admin_pages/AdminDashboard";
+import ProtectedFromAdmin from "./utils/routing/ProtectedFromAdmin";
 
 function App() {
   const [currentPath, setCurrentPath] = useRecoilState(currentPathAtom);
@@ -57,7 +60,14 @@ function App() {
             element={<SecondaryLayout_4 />}
           />
           <Route path="/jeeyars" element={<SecondaryLayout_5 />} />
-          <Route path="/login" element={<Login />} />
+
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Route>
+
+          <Route element={<ProtectedFromAdmin />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
 
           {/* Old paths */}
           {/* <Route path="/sample_page" element={<SecondaryLayout_1 />} />

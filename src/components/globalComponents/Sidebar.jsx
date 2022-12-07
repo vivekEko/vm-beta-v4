@@ -253,6 +253,10 @@ const Sidebar = () => {
     }
   }, [sidebarStatus]);
 
+  useEffect(() => {
+    console.log("openedLink", openedLink);
+  }, [openedLink]);
+
   return (
     <div
       id="sidebar"

@@ -145,7 +145,9 @@ const SecondaryLayout_5 = () => {
               <div className="bg-[#FC8D0B] p-5 text-white">
                 <div className="bg-[#FFE8B1] aspect-video w-full"></div>
                 <div>
-                  <h1 className="text-lg uppercase py-2">{data?.name}</h1>
+                  <h1 className="text-lg uppercase py-2 min-h-[90px] ">
+                    {data?.name}
+                  </h1>
                   <div className="flex justify-between items-end ">
                     <h2 className="text-2xl">
                       {data?.prefix +
