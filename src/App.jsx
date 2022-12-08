@@ -27,6 +27,8 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("pathname:");
+
     console.log(location?.pathname);
     setCurrentPath(location);
   }, [location]);
@@ -40,14 +42,15 @@ function App() {
       </div>
       <div
         className={` ${
-          currentPath?.pathname === "/" || currentPath?.pathname === "/login"
+          currentPath?.pathname === "/home" ||
+          currentPath?.pathname === "/login"
             ? "pl-[0px]"
             : "pl-0 md:pl-[60px] "
         } `}
       >
         <Routes>
-          <Route path="*" element={<Navigate to="/" replace={true} />} />
-          <Route path="/" element={<Landing />} />
+          <Route path="*" element={<Navigate to="/home" replace={true} />} />
+          <Route path="/home" element={<Landing />} />
           <Route
             path="/sub_page/:call_link/:page_id"
             element={<SecondaryLayout_1 />}

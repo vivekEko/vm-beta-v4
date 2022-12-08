@@ -229,6 +229,7 @@ const Sidebar = () => {
       .get(VITE_BASE_LINK + "sideBar")
       .then(function (response) {
         setSidebarData(response?.data);
+        console.log("sidebar Data:", response?.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -263,7 +264,7 @@ const Sidebar = () => {
       className={` ${
         sidebarStatus
           ? "w-[100%] ease-in"
-          : currentPath?.pathname !== "/"
+          : currentPath?.pathname !== "/home"
           ? "w-[0%] ease-out   min-w-[0px] md:w-[0.1%] md:min-w-[60px]"
           : "w-[0%] ease-out  min-w-[0px]"
       } h-screen bg-[#FC8D0B] fixed top-0 bottom-0  max-w-[300px] transition-all duration-300  shadow-2xl z-[9999] `}
@@ -274,7 +275,7 @@ const Sidebar = () => {
           <div
             onClick={() => setSidebarStatus(!sidebarStatus)}
             className={` ${
-              currentPath?.pathname === "/" ? "hidden" : "flex"
+              currentPath?.pathname === "/home" ? "hidden" : "flex"
             } w-[30px] h-[25px] mt-5 flex-col justify-between gap-2 mr-auto cursor-pointer ml-2 `}
           >
             <div
@@ -296,7 +297,7 @@ const Sidebar = () => {
 
           <button
             className={` ${
-              currentPath?.pathname === "/"
+              currentPath?.pathname === "/home"
                 ? "fixed top-9 left-2 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold "
                 : "hidden"
             } 
@@ -312,7 +313,7 @@ const Sidebar = () => {
 
         <button
           className={` ${
-            currentPath?.pathname !== "/"
+            currentPath?.pathname !== "/home"
               ? "fixed top-0 left-0 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold md:hidden "
               : "hidden"
           } 
@@ -343,7 +344,7 @@ const Sidebar = () => {
 
         <div
           className={` ${
-            currentPath?.pathname === "/" ? "mt-[7.5rem]" : "mt-20"
+            currentPath?.pathname === "/home" ? "mt-[7.5rem]" : "mt-20"
           } min-w-[300px] `}
         >
           {/* sidebar links container */}
@@ -359,17 +360,16 @@ const Sidebar = () => {
               >
                 <div className="flex justify-between items-center  ">
                   {/* main links */}
+
                   <NavLink
                     to={data?.main_link?.link_path}
-                    className={({ isActive }) =>
-                      isActive
+                    className={` ${
+                      currentPath?.pathname?.includes(
+                        data?.main_link?.link_code
+                      )
                         ? "opacity-100"
-                        : ` ${
-                            openedLink?.includes(data?.main_link?.link_path)
-                              ? "opacity-100"
-                              : "opacity-50"
-                          } `
-                    }
+                        : "opacity-50"
+                    } `}
                   >
                     <button
                       onClick={() => setSidebarStatus(false)}
@@ -425,13 +425,15 @@ const Sidebar = () => {
                       <Link key={sub_index} to={sub_data?.sub_link_path}>
                         <button className="block  w-full text-left">
                           <h1
-                            className={` ${
-                              currentPath?.pathname?.includes(
-                                sub_data?.sub_link_path
-                              )
-                                ? "opacity-100"
-                                : "opacity-50"
-                            } text-white py-3 pl-16 uppercase`}
+                            className={`
+                          ${
+                            currentPath?.pathname?.includes(
+                              sub_data?.link_code
+                            ) && currentPath?.pathname?.includes(sub_data?.id)
+                              ? "opacity-100"
+                              : "opacity-50"
+                          } text-white py-3 pl-16 uppercase
+                          `}
                           >
                             {sub_data?.sub_link_name}
                           </h1>
