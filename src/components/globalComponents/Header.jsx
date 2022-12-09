@@ -6,7 +6,7 @@ import translate_icon from "../../assets/img/header/translate-icon.png";
 
 const Header = () => {
   return (
-    <header className="  w-full  ">
+    <header className="w-full">
       <div className="flex justify-center md:justify-between items-center w-[90%] mx-auto pt-5">
         <div className="hidden md:block  flex-1"></div>
         <div className=" flex-1">

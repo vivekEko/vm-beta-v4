@@ -58,8 +58,7 @@ const Login = () => {
               type="text"
               className="border rounded-md p-2 w-full my-2 outline-[#FC8D0B]"
             />
-
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Password </label>
             <input
               ref={passwordRef}
               name="password"
@@ -68,7 +67,6 @@ const Login = () => {
             />
             {/* error */}
             <p className=" text-[#FF440D] invisible">Incorrect credentials</p>
-
             <button
               type="submit"
               className="rounded-md bg-[#FF440D] text-white w-full mt-3 p-2 transition-all active:scale-95"

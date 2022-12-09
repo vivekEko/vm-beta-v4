@@ -18,7 +18,6 @@ const Sidebar = () => {
   // local variables
   const [openedLink, setOpenedLink] = useState(null);
   const [sidebarData, setSidebarData] = useState(null);
-  const [activeLink, setActiveLink] = useState(null);
   // const sidebarData = [
   //   {
   //     main_link: {

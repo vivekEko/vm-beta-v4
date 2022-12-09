@@ -28,7 +28,6 @@ function App() {
 
   useEffect(() => {
     console.log("pathname:");
-
     console.log(location?.pathname);
     setCurrentPath(location);
   }, [location]);
@@ -71,12 +70,6 @@ function App() {
           <Route element={<ProtectedFromAdmin />}>
             <Route path="/login" element={<Login />} />
           </Route>
-
-          {/* Old paths */}
-          {/* <Route path="/sample_page" element={<SecondaryLayout_1 />} />
-          <Route path="/albums" element={<SecondaryLayout_2 />} />
-          <Route path="/albums_expanded" element={<SecondaryLayout_3 />} />
-          <Route path="/album_details" element={<SecondaryLayout_4 />} /> */}
         </Routes>
       </div>
     </div>
