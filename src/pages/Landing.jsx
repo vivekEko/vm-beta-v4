@@ -36,23 +36,11 @@ const Landing = () => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   console.log("landingPageData");
-  //   console.log(landingPageData);
-  // }, [landingPageData]);
-
   return (
     <div className="">
-      {/* <HeroSection />
-      <EventSection />
-      <SecondSection />
-      <ThirdSection />
-      <FourthSection />
-      <FifthSection /> */}
-
       {landingPageData?.data?.map((sectionData, sectionIndex) => {
         return (
-          <div key={sectionIndex}>
+          <div key={sectionIndex} className="md:sticky top-0">
             <Section apiData={sectionData} />
           </div>
         );

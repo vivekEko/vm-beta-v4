@@ -11,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-[#FC8D0B] bg-opacity-20 h-screen">
+    <div className="bg-[#FC8D0B] bg-opacity-20 h-screen font-inter">
       <Admin_header />
       <div className="flex justify-center pt-10 ">
         <div className="p-10 bg-white rounded-md w-full max-w-[400px] ">

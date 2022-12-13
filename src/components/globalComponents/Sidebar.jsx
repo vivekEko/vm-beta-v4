@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 //  state manegaement (recoil js)
 import { useRecoilState } from "recoil";
 import currentPathAtom from "../../recoil/helpers/currentPathAtom";
@@ -7,6 +7,8 @@ import sidebarStatusAtom from "../../recoil/sidebar/sidebarStatusAtom";
 
 // assets
 import down_arrow from "../../assets/img/sidebar/down-arrow-icon.svg";
+import power_icon from "../../assets/img/sidebar/power-icon.svg";
+
 import axios from "axios";
 import { VITE_BASE_LINK } from "../../base_link/BaseLink";
 
@@ -18,6 +20,7 @@ const Sidebar = () => {
   // local variables
   const [openedLink, setOpenedLink] = useState(null);
   const [sidebarData, setSidebarData] = useState(null);
+  const navigate = useNavigate();
   // const sidebarData = [
   //   {
   //     main_link: {
@@ -264,18 +267,28 @@ const Sidebar = () => {
         sidebarStatus
           ? "w-[100%] ease-in"
           : currentPath?.pathname !== "/home"
-          ? "w-[0%] ease-out   min-w-[0px] md:w-[0.1%] md:min-w-[60px]"
+          ? ` ${
+              currentPath?.pathname?.includes("/admin")
+                ? "w-full"
+                : "w-[0%] ease-out   min-w-[0px] md:w-[0.1%] md:min-w-[60px]"
+            } `
           : "w-[0%] ease-out  min-w-[0px]"
-      } h-screen bg-[#FC8D0B] fixed top-0 bottom-0  max-w-[300px] transition-all duration-300  shadow-2xl z-[9999] `}
+      } h-screen bg-[#FC8D0B] fixed top-0 bottom-0  max-w-[300px] transition-all duration-300  shadow-2xl z-[9999] overflow-y-scroll scrollbar-hide  pb-[100px]  `}
     >
-      <div className=" overflow-x-hidden">
+      <div className=" overflow-x-hidden ">
         {/* hamburger */}
-        <div>
+        <div className="">
           <div
-            onClick={() => setSidebarStatus(!sidebarStatus)}
+            onClick={() => {
+              currentPath?.pathname?.includes("/admin")
+                ? ""
+                : setSidebarStatus(!sidebarStatus);
+            }}
             className={` ${
-              currentPath?.pathname === "/home" ? "hidden" : "flex"
-            } w-[30px] h-[25px] mt-5 flex-col justify-between gap-2 mr-auto cursor-pointer ml-2 `}
+              currentPath?.pathname === "/home" ? "hidden" : "hidden md:flex"
+            } w-[30px] h-[25px] mt-5 flex-col justify-between gap-2 mr-auto ${
+              currentPath?.pathname?.includes("/admin") ? "" : "cursor-pointer"
+            }  ml-2    `}
           >
             <div
               className={` ${
@@ -297,21 +310,33 @@ const Sidebar = () => {
           <button
             className={` ${
               currentPath?.pathname === "/home"
-                ? "fixed top-9 left-2 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold "
+                ? "fixed top-9 left-2 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold cursor-pointer"
+                : currentPath?.pathname?.includes("/admin")
+                ? "fixed top-5 ml-2 left-5 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold cursor-default"
                 : "hidden"
             } 
           
-          ${sidebarStatus ? "text-white" : "text-[#630000]"}
+          ${
+            sidebarStatus || currentPath?.pathname?.includes("/admin")
+              ? "text-white"
+              : "text-[#630000]"
+          }
+
+         
 
           `}
-            onClick={() => setSidebarStatus(!sidebarStatus)}
+            onClick={() => {
+              currentPath?.pathname?.includes("/admin")
+                ? ""
+                : setSidebarStatus(!sidebarStatus);
+            }}
           >
             MENU
           </button>
         </div>
 
         <button
-          className={` ${
+          className={`  ${
             currentPath?.pathname !== "/home"
               ? "fixed top-0 left-0 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold md:hidden "
               : "hidden"
@@ -344,7 +369,7 @@ const Sidebar = () => {
         <div
           className={` ${
             currentPath?.pathname === "/home" ? "mt-[7.5rem]" : "mt-20"
-          } min-w-[300px] `}
+          } min-w-[300px]   `}
         >
           {/* sidebar links container */}
           {sidebarData?.map((data, index) => {
@@ -445,6 +470,38 @@ const Sidebar = () => {
             );
           })}
         </div>
+
+        {currentPath?.pathname?.includes("/admin") && (
+          <div>
+            <div className="p-2 py-4 bg-[#FC8D0B] fixed w-[300px] bottom-0   left-0 right-0 flex justify-between items-center ">
+              <div className="flex items-center">
+                <div>
+                  <div className="bg-white aspect-square w-[45px] rounded-full  flex justify-center items-center tracking-widest text-[#FC8D0B] font-semibold">
+                    VK
+                  </div>
+                </div>
+                <div className="ml-2">
+                  <h1 className="text-white font-medium tracking-wider text-lg">
+                    Vivek Khanal
+                  </h1>
+                  <h1 className="text-gray-200 ">vivek.k@ekoinfomatics.com</h1>
+                </div>
+              </div>
+              {localStorage.getItem("token") && (
+                <div
+                  onClick={() => {
+                    localStorage?.clear();
+                    navigate("/login");
+                  }}
+                  title="Logout"
+                  className="cursor-pointer"
+                >
+                  <img src={power_icon} alt="logout" className="w-[25px]" />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

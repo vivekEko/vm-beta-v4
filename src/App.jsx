@@ -44,7 +44,11 @@ function App() {
           currentPath?.pathname === "/home" ||
           currentPath?.pathname === "/login"
             ? "pl-[0px]"
-            : "pl-0 md:pl-[60px] "
+            : ` ${
+                currentPath?.pathname?.includes("/admin")
+                  ? "pl-[300px] "
+                  : "pl-0 md:pl-[60px]"
+              }  `
         } `}
       >
         <Routes>

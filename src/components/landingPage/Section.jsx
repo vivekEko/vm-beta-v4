@@ -12,10 +12,7 @@ const Section = (props) => {
   return (
     <div>
       {props?.apiData?.layout === "hero" && (
-        <section
-          id={props?.apiData?.seq_no}
-          className="md:snap-start md:snap-always overflow-y-hidden "
-        >
+        <section id={props?.apiData?.seq_no} className=" overflow-y-hidden ">
           <div className="bg-hero-image    md:h-screen bg-fixed bg-center bg-no-repeat bg-cover border-b-[14px] border-b-[#942200] ">
             <div className="h-full flex flex-col justify-between items-center">
               <Header />
@@ -66,7 +63,7 @@ const Section = (props) => {
       {props?.apiData?.layout === "event" && (
         <section
           id="landing_page_2"
-          className="bg-[#FC8D0B]  pt-20 border-b-[12px] border-[#942200] md:snap-start md:snap-always min-h-screen"
+          className="bg-[#FC8D0B]  pt-20 border-b-[12px] border-[#942200]  min-h-screen"
         >
           <div className="flex flex-col gap-5 justify-between h-full">
             <div>
@@ -99,7 +96,7 @@ const Section = (props) => {
       {props?.apiData?.layout === "two_images" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#7CC0F1]  pt-20 border-b-[12px] border-[#942200] md:snap-start md:snap-always md:h-screen"
+          className="bg-[#7CC0F1]  pt-20 border-b-[12px] border-[#942200]  md:h-screen"
         >
           <div className="flex flex-col justify-between h-full">
             <div>
@@ -148,7 +145,7 @@ const Section = (props) => {
       {props?.apiData?.layout === "right_image" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#FFE600] pt-10 flex gap-5 flex-col  justify-between md:flex-row border-b-[9px] border-[#942200] md:snap-start md:snap-always min-h-screen"
+          className="bg-[#FFE600] pt-10 flex gap-5 flex-col  justify-between md:flex-row border-b-[9px] border-[#942200]  min-h-screen"
         >
           <div className="flex justify-between flex-col  gap-5  py-20 w-full">
             <div className="">
@@ -214,7 +211,7 @@ const Section = (props) => {
       {props?.apiData?.layout === "left_image" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#FFB507] pt-10 py-20 flex flex-col-reverse gap-5 min-h-screen md:flex-row-reverse border-b-[12px] border-[#942200]  justify-between md:snap-start md:snap-always"
+          className="bg-[#FFB507] pt-10 py-20 flex flex-col-reverse gap-5 min-h-screen md:flex-row-reverse border-b-[12px] border-[#942200]  justify-between "
         >
           <div className="flex justify-between flex-col gap-5 flex-1  ">
             <div className="md:py-20">
