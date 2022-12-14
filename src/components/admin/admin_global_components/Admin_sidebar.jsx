@@ -2,20 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 //  state manegaement (recoil js)
 import { useRecoilState } from "recoil";
-import currentPathAtom from "../../recoil/helpers/currentPathAtom";
-import sidebarStatusAtom from "../../recoil/sidebar/sidebarStatusAtom";
+import currentPathAtom from "../../../recoil/helpers/currentPathAtom";
+import sidebarAdminStatus from "../../../recoil/sidebar/sidebarAdminStatus";
 
 // assets
-import down_arrow from "../../assets/img/sidebar/down-arrow-icon.svg";
-import power_icon from "../../assets/img/sidebar/power-icon.svg";
+import power_icon from "../../../assets/img/sidebar/power-icon.svg";
+import down_arrow from "../../../assets/img/sidebar/down-arrow-icon.svg";
 
 import axios from "axios";
-import { VITE_BASE_LINK } from "../../base_link/BaseLink";
+import { VITE_BASE_LINK } from "../../../base_link/BaseLink";
 
-const Sidebar = () => {
+const Admin_sidebar = () => {
   // Global variables
   const [currentPath] = useRecoilState(currentPathAtom);
-  const [sidebarStatus, setSidebarStatus] = useRecoilState(sidebarStatusAtom);
+  const [sidebarStatus, setSidebarStatus] = useRecoilState(sidebarAdminStatus);
 
   // local variables
   const [openedLink, setOpenedLink] = useState(null);
@@ -24,9 +24,10 @@ const Sidebar = () => {
 
   useEffect(() => {
     axios
-      .get(VITE_BASE_LINK + "sideBar")
+      .get(VITE_BASE_LINK + "sideBarAdmin")
       .then(function (response) {
         setSidebarData(response?.data);
+        console.log("sidebar Admin Data:", response?.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -35,15 +36,15 @@ const Sidebar = () => {
 
   // Detect outside click and close sidebar
 
-  window.addEventListener("click", (event) => {
-    const sidebar = document?.getElementById("sidebar");
+  //   window.addEventListener("click", (event) => {
+  //     const sidebar = document?.getElementById("admin_sidebar");
 
-    if (sidebar) {
-      if (!sidebar?.contains(event?.target)) {
-        setSidebarStatus(false);
-      }
-    }
-  });
+  //     if (sidebar) {
+  //       if (!sidebar?.contains(event?.target)) {
+  //         setSidebarStatus(false);
+  //       }
+  //     }
+  //   });
 
   useEffect(() => {
     if (sidebarStatus === false) {
@@ -53,7 +54,7 @@ const Sidebar = () => {
 
   return (
     <div
-      id="sidebar"
+      id="admin_sidebar"
       className={` ${
         sidebarStatus
           ? "w-[100%] ease-in"
@@ -66,10 +67,10 @@ const Sidebar = () => {
         {/* hamburger */}
         <div className="">
           <div
-            onClick={() => setSidebarStatus(!sidebarStatus)}
+            // onClick={() => setSidebarStatus(!sidebarStatus)}
             className={` ${
               currentPath?.pathname === "/home" ? "hidden" : "hidden md:flex"
-            } w-[30px] h-[25px] mt-5 flex-col justify-between gap-2 mr-auto cursor-pointer ml-2    `}
+            } w-[30px] h-[25px] mt-5 flex-col justify-between gap-2 mr-auto cursor-pointer ml-2`}
           >
             <div
               className={` ${
@@ -91,7 +92,7 @@ const Sidebar = () => {
           <button
             className={` ${
               currentPath?.pathname === "/home"
-                ? "fixed top-9 left-2 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold cursor-pointer"
+                ? "fixed top-9 left-2 md:left-5  lg:left-8 xl:left-10 text-xl  font-bold cursor-pointer"
                 : "hidden"
             } 
           
@@ -100,7 +101,7 @@ const Sidebar = () => {
          
 
           `}
-            onClick={() => setSidebarStatus(!sidebarStatus)}
+            // onClick={() => setSidebarStatus(!sidebarStatus)}
           >
             MENU
           </button>
@@ -114,7 +115,7 @@ const Sidebar = () => {
           } 
 
           `}
-          onClick={() => setSidebarStatus(!sidebarStatus)}
+          //   onClick={() => setSidebarStatus(!sidebarStatus)}
         >
           <div className="w-[30px] h-[25px] mt-5 flex flex-col justify-between gap-2 mr-auto cursor-pointer ml-2 ">
             <div
@@ -239,9 +240,39 @@ const Sidebar = () => {
             );
           })}
         </div>
+
+        <div>
+          <div className="p-2 py-4 bg-[#FC8D0B] fixed w-[300px] bottom-0   left-0 right-0 flex justify-between items-center ">
+            <div className="flex items-center">
+              <div>
+                <div className="bg-white aspect-square w-[45px] rounded-full  flex justify-center items-center tracking-widest text-[#FC8D0B] font-semibold">
+                  VK
+                </div>
+              </div>
+              <div className="ml-2">
+                <h1 className="text-white font-medium tracking-wider text-lg">
+                  Vivek Khanal
+                </h1>
+                <h1 className="text-gray-200 ">vivek.k@ekoinfomatics.com</h1>
+              </div>
+            </div>
+            {localStorage.getItem("token") && (
+              <div
+                onClick={() => {
+                  localStorage?.clear();
+                  navigate("/login");
+                }}
+                title="Logout"
+                className="cursor-pointer"
+              >
+                <img src={power_icon} alt="logout" className="w-[25px]" />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Sidebar;
+export default Admin_sidebar;

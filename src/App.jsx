@@ -21,6 +21,7 @@ import Login from "./pages/Login";
 import ProtectedRoutes from "./utils/routing/ProtectedRoutes";
 import AdminDashboard from "./admin_pages/AdminDashboard";
 import ProtectedFromAdmin from "./utils/routing/ProtectedFromAdmin";
+import Admin_sidebar from "./components/admin/admin_global_components/Admin_sidebar";
 
 function App() {
   const [currentPath, setCurrentPath] = useRecoilState(currentPathAtom);
@@ -37,7 +38,11 @@ function App() {
       <div
         className={` ${currentPath?.pathname === "/login" ? "hidden" : " "} `}
       >
-        <Sidebar />
+        {currentPath?.pathname?.includes("/admin") ? (
+          <Admin_sidebar />
+        ) : (
+          <Sidebar />
+        )}
       </div>
       <div
         className={` ${
@@ -68,7 +73,11 @@ function App() {
           <Route path="/jeeyars" element={<SecondaryLayout_5 />} />
 
           <Route element={<ProtectedRoutes />}>
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route
+              path="/admin"
+              element={<Navigate to="/admin/home_edit" replace={true} />}
+            />
+            <Route path="/admin/home_edit" element={<AdminDashboard />} />
           </Route>
 
           <Route element={<ProtectedFromAdmin />}>

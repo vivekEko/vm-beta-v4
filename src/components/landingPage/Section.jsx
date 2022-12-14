@@ -96,9 +96,9 @@ const Section = (props) => {
       {props?.apiData?.layout === "two_images" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#7CC0F1]  pt-20 border-b-[12px] border-[#942200]  md:h-screen"
+          className="bg-[#7CC0F1]  pt-20 border-b-[12px] border-[#942200]  md:h-screen "
         >
-          <div className="flex flex-col justify-between h-full">
+          <div className="flex flex-col justify-between h-full  ">
             <div>
               <h1 className="uppercase text-[#191689] text-[1.4rem] sm:text-[1.6rem] lg:text-3xl xl:text-5xl  font-semibold text-center">
                 {props?.apiData?.h1}
@@ -109,7 +109,7 @@ const Section = (props) => {
 
               <p
                 className="font-caladea text-center w-[80%] md:max-w-[70%]
-          lg:max-w-[60%] xl:max-w-[50%] mx-auto mb-5 sm:text-lg xl:text-xl"
+          lg:max-w-[60%] xl:max-w-[50%] mx-auto mb-5 sm:text-lg xl:text-xl "
               >
                 {props?.apiData?.p}
               </p>
