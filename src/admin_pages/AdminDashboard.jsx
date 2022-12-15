@@ -3,7 +3,7 @@ import Admin_header from "../components/admin/admin_global_components/Admin_head
 
 const AdminDashboard = () => {
   const homePageData = {
-    title: ["Page title", " Side pages", "Status"],
+    title: ["Page title", " Side pages", "Status", "Actions"],
     all_page_data: [
       {
         page_name: "Home Page",
@@ -49,10 +49,26 @@ const AdminDashboard = () => {
   return (
     <div className="bg-[#FFF6EB]">
       <Admin_header />
-      <div className="px-16  h-[100vh]">
-        <div className="grid grid-cols-3 justify-items-center items-center">
+      <div className="px-16 h-[100vh]">
+        <div className="grid grid-cols-4 p-5 items-center pt-20 font-inter">
           {homePageData?.title?.map((data, index) => {
-            return <h1>{data}</h1>;
+            return <h1 className="font-semibold ">{data}</h1>;
+          })}
+        </div>
+
+        <div>
+          {homePageData?.all_page_data?.map((data, index) => {
+            return (
+              <div
+                key={index}
+                className="grid grid-cols-4  items-center p-5 my-5 font-inter bg-white"
+              >
+                <h1 className="col-span-2">{data?.page_name}</h1>
+                <h1>{data?.sub_pages}</h1>
+                <h1>{data?.status}</h1>
+                <h1></h1>
+              </div>
+            );
           })}
         </div>
       </div>
