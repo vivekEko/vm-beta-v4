@@ -1,6 +1,10 @@
 import React from "react";
 import Admin_header from "../components/admin/admin_global_components/Admin_header";
 
+// assets
+import editIcon from "../assets/img/admin/dashboard/edit_icon.svg";
+import optionsIcon from "../assets/img/admin/dashboard/options_icon.svg";
+
 const AdminDashboard = () => {
   const homePageData = {
     title: ["Page title", " Side pages", "Status", "Actions"],
@@ -47,12 +51,23 @@ const AdminDashboard = () => {
     ],
   };
   return (
-    <div className="bg-[#FFF6EB]">
+    <div className="bg-[#FFF6EB] ">
       <Admin_header />
       <div className="px-16 h-[100vh]">
         <div className="grid grid-cols-4 p-5 items-center pt-20 font-inter">
           {homePageData?.title?.map((data, index) => {
-            return <h1 className="font-semibold ">{data}</h1>;
+            return (
+              <h1
+                className={`font-semibold  ${
+                  data === "Page title" ? "" : "text-center"
+                }
+                
+                ${data === "Status" ? "max-w-[200px] mx-auto" : ""}
+                `}
+              >
+                {data}
+              </h1>
+            );
           })}
         </div>
 
@@ -63,10 +78,27 @@ const AdminDashboard = () => {
                 key={index}
                 className="grid grid-cols-4  items-center p-5 my-5 font-inter bg-white"
               >
-                <h1 className="col-span-2">{data?.page_name}</h1>
-                <h1>{data?.sub_pages}</h1>
-                <h1>{data?.status}</h1>
-                <h1></h1>
+                <h1 className="text-[#5A5A5A] font-semibold ">
+                  {data?.page_name}
+                </h1>
+                <h1 className="font-semibold  text-center">
+                  {data?.sub_pages}
+                </h1>
+                <h1
+                  className={` mx-auto  ${
+                    data?.status === "Published"
+                      ? "bg-[#29A654] "
+                      : data?.status === "Draft"
+                      ? "bg-[#7E7E7E]"
+                      : "bg-[#FFA451]"
+                  }  text-center text-white p-2 px-5 w-[150px] rounded-full`}
+                >
+                  {data?.status}
+                </h1>
+                <h1 className="flex justify-center gap-5">
+                  <img src={editIcon} alt="edit" />
+                  <img src={optionsIcon} alt="options" />
+                </h1>
               </div>
             );
           })}

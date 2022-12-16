@@ -46,14 +46,12 @@ function App() {
       </div>
       <div
         className={` ${
-          currentPath?.pathname === "/home" ||
+          currentPath?.pathname?.includes("/home") ||
           currentPath?.pathname === "/login"
             ? "pl-[0px]"
-            : ` ${
-                currentPath?.pathname?.includes("/admin")
-                  ? "pl-[300px] "
-                  : "pl-0 md:pl-[60px]"
-              }  `
+            : currentPath?.pathname?.includes("/admin")
+            ? "pl-[300px] "
+            : "pl-0 md:pl-[60px]"
         } `}
       >
         <Routes>
@@ -75,9 +73,9 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route
               path="/admin"
-              element={<Navigate to="/admin/home_edit" replace={true} />}
+              element={<Navigate to="/admin/dashboard" replace={true} />}
             />
-            <Route path="/admin/home_edit" element={<AdminDashboard />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Route>
 
           <Route element={<ProtectedFromAdmin />}>

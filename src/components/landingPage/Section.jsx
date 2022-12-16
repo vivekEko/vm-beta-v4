@@ -48,7 +48,7 @@ const Section = (props) => {
                 </div>
               </div>
 
-              <a href="/#landing_page_2">
+              <a href="/home#landing_page_2">
                 <button className="absolute bottom-52 sm:bottom-5 md:bottom-20 right-5 ">
                   <img src={scroll_icon} alt="scroll" className="w-[30px] " />
                 </button>

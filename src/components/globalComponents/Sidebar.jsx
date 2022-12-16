@@ -57,7 +57,7 @@ const Sidebar = () => {
       className={` ${
         sidebarStatus
           ? "w-[100%] ease-in"
-          : currentPath?.pathname !== "/home"
+          : !currentPath?.pathname?.includes("/home")
           ? "w-[0%] ease-out   min-w-[0px] md:w-[0.1%] md:min-w-[60px]"
           : "w-[0%] ease-out  min-w-[0px]"
       } h-screen bg-[#FC8D0B] fixed top-0 bottom-0  max-w-[300px] transition-all duration-300  shadow-2xl z-[9999] overflow-y-scroll scrollbar-hide  pb-[100px]  `}
@@ -68,7 +68,9 @@ const Sidebar = () => {
           <div
             onClick={() => setSidebarStatus(!sidebarStatus)}
             className={` ${
-              currentPath?.pathname === "/home" ? "hidden" : "hidden md:flex"
+              currentPath?.pathname?.includes("/home")
+                ? "hidden"
+                : "hidden md:flex"
             } w-[30px] h-[25px] mt-5 flex-col justify-between gap-2 mr-auto cursor-pointer ml-2    `}
           >
             <div
@@ -90,7 +92,7 @@ const Sidebar = () => {
 
           <button
             className={` ${
-              currentPath?.pathname === "/home"
+              currentPath?.pathname?.includes("/home")
                 ? "fixed top-9 left-2 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold cursor-pointer"
                 : "hidden"
             } 
@@ -108,7 +110,7 @@ const Sidebar = () => {
 
         <button
           className={`  ${
-            currentPath?.pathname !== "/home"
+            !currentPath?.pathname?.includes("/home")
               ? "fixed top-0 left-0 md:left-5 lg:left-8 xl:left-10 text-xl  font-bold md:hidden "
               : "hidden"
           } 
@@ -137,7 +139,7 @@ const Sidebar = () => {
 
         <div
           className={` ${
-            currentPath?.pathname === "/home" ? "mt-[7.5rem]" : "mt-20"
+            currentPath?.pathname?.includes("/home") ? "mt-[7.5rem]" : "mt-20"
           } min-w-[300px]   `}
         >
           {/* sidebar links container */}
