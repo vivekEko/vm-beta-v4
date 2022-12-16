@@ -35,7 +35,6 @@ function App() {
 
   return (
     <div className="font-oswald cursor-default">
-      <h1></h1>
       <div
         className={` ${currentPath?.pathname === "/login" ? "hidden" : " "} `}
       >
