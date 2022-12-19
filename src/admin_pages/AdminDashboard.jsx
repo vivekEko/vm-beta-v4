@@ -1,11 +1,13 @@
-import React from "react";
-import Admin_header from "../components/admin/admin_global_components/Admin_header";
+import React, { useEffect, useState } from "react";
 
 // assets
 import editIcon from "../assets/img/admin/dashboard/edit_icon.svg";
 import optionsIcon from "../assets/img/admin/dashboard/options_icon.svg";
+import Admin_header from "../components/admin/admin_global_components/Admin_header";
 
 const AdminDashboard = () => {
+  const [selectedPage, setSelectedPage] = useState(null);
+
   const homePageData = {
     title: ["Page title", " Side pages", "Status", "Actions"],
     all_page_data: [
@@ -53,8 +55,8 @@ const AdminDashboard = () => {
   return (
     <div className="bg-[#FFF6EB] ">
       <Admin_header />
-      <div className="px-16 h-[100vh]">
-        <div className="grid grid-cols-4 p-5 items-center pt-20 font-inter">
+      <div className="px-16 ">
+        <div className="grid grid-cols-4 p-5 items-center pt-20 font-inter sticky top-[107px] bg-[#FFF6EB] z-[10060]">
           {homePageData?.title?.map((data, index) => {
             return (
               <h1
@@ -71,14 +73,14 @@ const AdminDashboard = () => {
           })}
         </div>
 
-        <div>
+        <div className="pb-16 ">
           {homePageData?.all_page_data?.map((data, index) => {
             return (
               <div
                 key={index}
-                className="grid grid-cols-4  items-center p-5 my-5 font-inter bg-white"
+                className="grid grid-cols-4  items-center p-5 my-5 font-inter bg-white z-10"
               >
-                <h1 className="text-[#5A5A5A] font-semibold ">
+                <h1 className="text-[#5A5A5A] font-semibold  ">
                   {data?.page_name}
                 </h1>
                 <h1 className="font-semibold  text-center">
@@ -96,8 +98,45 @@ const AdminDashboard = () => {
                   {data?.status}
                 </h1>
                 <h1 className="flex justify-center gap-5">
-                  <img src={editIcon} alt="edit" />
-                  <img src={optionsIcon} alt="options" />
+                  <div>
+                    <img src={editIcon} alt="edit" className="cursor-pointer" />
+                  </div>
+
+                  <div
+                    className="relative"
+                    onClick={() => {
+                      if (selectedPage === data?.page_name) {
+                        setSelectedPage(null);
+                      } else {
+                        setSelectedPage(data?.page_name);
+                      }
+                    }}
+                  >
+                    <img
+                      src={optionsIcon}
+                      alt="options"
+                      className="cursor-pointer z-0"
+                    />
+                  </div>
+
+                  <div
+                    className={`fixed inset-0 bg-transarent ${
+                      selectedPage === data?.page_name ? "block" : "hidden"
+                    } z-[10000] `}
+                  ></div>
+
+                  <div
+                    className={` ${
+                      selectedPage === data?.page_name ? "block" : "hidden"
+                    } absolute right-0 top-[110%] bg-white shadow-lg z-[10050] space-y-2 `}
+                  >
+                    <h1 className="p-3 px-5 cursor-pointer hover:bg-slate-100">
+                      Published
+                    </h1>
+                    <h1 className="p-3 px-5 cursor-pointer hover:bg-slate-100">
+                      Archived
+                    </h1>
+                  </div>
                 </h1>
               </div>
             );

@@ -34,18 +34,6 @@ const Admin_sidebar = () => {
       });
   }, []);
 
-  // Detect outside click and close sidebar
-
-  //   window.addEventListener("click", (event) => {
-  //     const sidebar = document?.getElementById("admin_sidebar");
-
-  //     if (sidebar) {
-  //       if (!sidebar?.contains(event?.target)) {
-  //         setSidebarStatus(false);
-  //       }
-  //     }
-  //   });
-
   useEffect(() => {
     if (sidebarStatus === false) {
       setOpenedLink(null);
@@ -166,7 +154,7 @@ const Admin_sidebar = () => {
                     } `}
                   >
                     <button
-                      onClick={() => setSidebarStatus(false)}
+                      // onClick={() => setSidebarStatus(false)}
                       className="flex  flex-[0.9] gap-5 py-5 items-center text-white op"
                     >
                       <div className="bg-white w-[40px] aspect-square rounded-full ">

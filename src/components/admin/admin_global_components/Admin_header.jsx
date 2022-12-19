@@ -7,7 +7,7 @@ import view_site from "../../../assets/img/admin/header/view-site.svg";
 
 const Admin_header = () => {
   return (
-    <header className="flex justify-between items-center p-5  bg-[#feddb5]  px-16 sticky top-0 ">
+    <header className="flex justify-between items-center p-5  bg-[#feddb5]  px-16 sticky top-0 z-[10060] ">
       <div></div>
       <div>
         <img src={header_img} alt="..." />
