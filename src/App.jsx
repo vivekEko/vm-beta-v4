@@ -22,6 +22,7 @@ import ProtectedRoutes from "./utils/routing/ProtectedRoutes";
 import AdminDashboard from "./admin_pages/AdminDashboard";
 import ProtectedFromAdmin from "./utils/routing/ProtectedFromAdmin";
 import Admin_sidebar from "./components/admin/admin_global_components/Admin_sidebar";
+import AdminHomePage from "./admin_pages/AdminHomePage";
 
 function App() {
   const [currentPath, setCurrentPath] = useRecoilState(currentPathAtom);
@@ -46,10 +47,10 @@ function App() {
       </div>
       <div
         className={` ${
-          currentPath?.pathname?.includes("/home") ||
+          currentPath?.pathname === "/home" ||
           currentPath?.pathname === "/login"
             ? "pl-[0px]"
-            : currentPath?.pathname?.includes("/admin")
+            : currentPath?.pathname?.includes("/admin/")
             ? "pl-[300px] "
             : "pl-0 md:pl-[60px]"
         } `}
@@ -76,6 +77,7 @@ function App() {
               element={<Navigate to="/admin/dashboard" replace={true} />}
             />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/home_edit/" element={<AdminHomePage />} />
           </Route>
 
           <Route element={<ProtectedFromAdmin />}>

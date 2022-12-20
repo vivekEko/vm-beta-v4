@@ -30,6 +30,7 @@ const Landing = () => {
       .get(VITE_BASE_LINK + "landingPage")
       .then(function (response) {
         setLandingPageData(response?.data);
+        console.log(response?.data);
       })
       .catch(function (error) {
         console.log(error);

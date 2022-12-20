@@ -60,6 +60,7 @@ const AdminDashboard = () => {
           {homePageData?.title?.map((data, index) => {
             return (
               <h1
+                key={index}
                 className={`font-semibold  ${
                   data === "Page title" ? "" : "text-center"
                 }
@@ -97,7 +98,7 @@ const AdminDashboard = () => {
                 >
                   {data?.status}
                 </h1>
-                <h1 className="flex justify-center gap-5">
+                <div className="flex justify-center gap-5">
                   <div>
                     <img src={editIcon} alt="edit" className="cursor-pointer" />
                   </div>
@@ -117,27 +118,27 @@ const AdminDashboard = () => {
                       alt="options"
                       className="cursor-pointer z-0"
                     />
-                  </div>
 
-                  <div
-                    className={`fixed inset-0 bg-transarent ${
-                      selectedPage === data?.page_name ? "block" : "hidden"
-                    } z-[10000] `}
-                  ></div>
+                    <div
+                      className={`fixed inset-0 bg-transarent ${
+                        selectedPage === data?.page_name ? "block" : "hidden"
+                      } z-[10000] `}
+                    ></div>
 
-                  <div
-                    className={` ${
-                      selectedPage === data?.page_name ? "block" : "hidden"
-                    } absolute right-0 top-[110%] bg-white shadow-lg z-[10050] space-y-2 `}
-                  >
-                    <h1 className="p-3 px-5 cursor-pointer hover:bg-slate-100">
-                      Published
-                    </h1>
-                    <h1 className="p-3 px-5 cursor-pointer hover:bg-slate-100">
-                      Archived
-                    </h1>
+                    <div
+                      className={` ${
+                        selectedPage === data?.page_name ? "block" : "hidden"
+                      } absolute right-0 top-[110%] bg-white shadow-lg z-[10050] space-y-2 `}
+                    >
+                      <h1 className="p-3 px-5 cursor-pointer hover:bg-slate-100">
+                        Published
+                      </h1>
+                      <h1 className="p-3 px-5 cursor-pointer hover:bg-slate-100">
+                        Archived
+                      </h1>
+                    </div>
                   </div>
-                </h1>
+                </div>
               </div>
             );
           })}
