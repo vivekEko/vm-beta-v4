@@ -27,7 +27,7 @@ const Admin_sidebar = () => {
       .get(VITE_BASE_LINK + "sideBarAdmin")
       .then(function (response) {
         setSidebarData(response?.data);
-        console.log("sidebar Admin Data:", response?.data);
+        // console.log("sidebar Admin Data:", response?.data);
       })
       .catch(function (error) {
         console.log(error);

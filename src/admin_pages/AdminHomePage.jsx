@@ -4,81 +4,97 @@ import { useEffect } from "react";
 import Admin_header from "../components/admin/admin_global_components/Admin_header";
 // assets
 import image_icon from "../assets/img/admin/home_edit/image_icon.svg";
+import { VITE_BASE_LINK } from "../base_link/BaseLink";
+import axios from "axios";
 
 const AdminHomePage = () => {
   const [activeSection, setActiveSection] = useState(null);
-  const pageData = {
-    pageName: "Home",
-    all_sections: [
-      {
-        section_name: "Hero Section",
-        section_data: [
-          {
-            title: "Heading",
-            content: "SRI VANAMAMALAI (THOTHADRI) MUTT",
-            type: "text",
-          },
-          {
-            title: "Sub Heading",
-            content: "SRI VANACHALA MAHAMUNI PARAMPARA",
-            type: "text",
-          },
+  const [bannerOptionDropdown, setBannerOptionDropdown] = useState(false);
+  const [pageData, setPageData] = useState(null);
 
-          {
-            title: "Brief Info",
-            content:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pellentesque quam vitae ornare porta. Vivamus pretium eleifend risus laoreet pretium. Ut sit amet finibus metus, nec cursus lacus.",
-            type: "text",
-          },
+  // const pageData = {
+  //   pageName: "Home",
+  //   all_sections: [
+  //     {
+  //       section_name: "Hero Section",
+  //       section_data: [
+  //         {
+  //           title: "Heading",
+  //           content: "SRI VANAMAMALAI (THOTHADRI) MUTT",
+  //           type: "text",
+  //         },
+  //         {
+  //           title: "Sub Heading",
+  //           content: "SRI VANACHALA MAHAMUNI PARAMPARA",
+  //           type: "text",
+  //         },
 
-          {
-            title: "Cover Image",
-            content:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pellentesque quam vitae ornare porta. Vivamus pretium eleifend risus laoreet pretium. Ut sit amet finibus metus, nec cursus lacus.",
-            type: "image",
-          },
-        ],
-      },
+  //         {
+  //           title: "Brief Info",
+  //           content:
+  //             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pellentesque quam vitae ornare porta. Vivamus pretium eleifend risus laoreet pretium. Ut sit amet finibus metus, nec cursus lacus.",
+  //           type: "text",
+  //         },
 
-      {
-        section_name: "Banner",
-        section_data: [
-          {
-            title: "Heading",
-            content: "SRI VANAMAMALAI DIVYADESAM",
-            type: "text",
-          },
-          {
-            title: "Sub Heading",
-            content: "SRI VARAMANGAI NACHIYAR SAMETHA SRI DEIVANAYAGA PERUMAL",
-            type: "text",
-          },
+  //         {
+  //           title: "Cover Image",
+  //           content:
+  //             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pellentesque quam vitae ornare porta. Vivamus pretium eleifend risus laoreet pretium. Ut sit amet finibus metus, nec cursus lacus.",
+  //           type: "image",
+  //         },
+  //       ],
+  //     },
 
-          {
-            title: "Brief Info",
-            content:
-              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.",
-            type: "text",
-          },
+  //     {
+  //       section_name: "Banner",
+  //       section_type: "Full Screen Image",
+  //       // section_type: "Content",
+  //       section_data: [
+  //         {
+  //           title: "Heading",
+  //           content: "SRI VANAMAMALAI DIVYADESAM",
+  //           type: "text",
+  //         },
+  //         {
+  //           title: "Sub Heading",
+  //           content: "SRI VARAMANGAI NACHIYAR SAMETHA SRI DEIVANAYAGA PERUMAL",
+  //           type: "text",
+  //         },
 
-          {
-            title: "Cover Image",
-            content:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pellentesque quam vitae ornare porta. Vivamus pretium eleifend risus laoreet pretium. Ut sit amet finibus metus, nec cursus lacus.",
-            type: "image",
-          },
-        ],
-      },
-    ],
-  };
+  //         {
+  //           title: "Brief Info",
+  //           content:
+  //             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.",
+  //           type: "text",
+  //         },
+
+  //         {
+  //           title: "Cover Image",
+  //           content:
+  //             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pellentesque quam vitae ornare porta. Vivamus pretium eleifend risus laoreet pretium. Ut sit amet finibus metus, nec cursus lacus.",
+  //           type: "image",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
 
   useEffect(() => {
-    setActiveSection(pageData?.all_sections[0]?.section_name);
+    let formdata = new FormData();
+    // formdata.append("token", localStorage.getItem("token"));
+    // formdata.append("product_id", productApiData?.product_id);
+    // formdata.append("size", productApiData?.size[selectedSize]);
+    axios.get(VITE_BASE_LINK + "home_page").then((response) => {
+      setActiveSection(response?.data?.all_sections[0]?.section_name);
+      setPageData(response?.data);
+      console.log(response?.data);
+    });
   }, []);
 
   const hiddenFileInput = React.useRef(null);
 
   const handleClick = (event) => {
+    console.log("clicked");
     hiddenFileInput.current.click();
   };
 
@@ -105,7 +121,7 @@ const AdminHomePage = () => {
           {/* edit fields */}
           <div className="w-full  pt-10">
             {pageData?.all_sections
-              ?.filter((filteredData, fliteredIndex) => {
+              ?.filter((filteredData) => {
                 if (activeSection?.includes(filteredData?.section_name)) {
                   return filteredData;
                 }
@@ -114,7 +130,10 @@ const AdminHomePage = () => {
                 return (
                   <div key={index}>
                     {data?.section_data?.map((sectionData, sectionIndex) => {
-                      if (sectionData?.type === "text") {
+                      if (
+                        sectionData?.type === "text" &&
+                        sectionData?.content?.length !== 0
+                      ) {
                         return (
                           <div
                             key={sectionIndex}
@@ -137,6 +156,7 @@ const AdminHomePage = () => {
                             <div className="mt-5">
                               <textarea
                                 type="text"
+                                rows={5}
                                 value={sectionData?.content}
                                 className="w-full outline-none border-0"
                               />
@@ -161,7 +181,7 @@ const AdminHomePage = () => {
                             </div>
 
                             <div className="mt-2 bg-white border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] relative ">
-                              <lable
+                              <label
                                 onClick={handleClick}
                                 htmlFor="upload-image"
                                 className="flex flex-col  justify-center items-center h-full min-h-[200px] border cursor-pointer"
@@ -177,14 +197,14 @@ const AdminHomePage = () => {
                                   </span>
                                 </h1>
                                 <h2>PNG, JPG, GIF up to 5MB</h2>
-                              </lable>
-                              <input
-                                ref={hiddenFileInput}
-                                className="hidden"
-                                id="upload-image"
-                                type="file"
-                              />
+                              </label>
                             </div>
+                            <input
+                              ref={hiddenFileInput}
+                              className="hidden"
+                              id="upload-image"
+                              type="file"
+                            />
                           </div>
                         );
                       }
@@ -195,25 +215,66 @@ const AdminHomePage = () => {
           </div>
 
           {/* section name list */}
-          <div className="w-[40%] min-w-[300px] ">
+          <div className="w-[40%] min-w-[300px] sticky top-64">
             <h1 className="font-semibold">Sections</h1>
             <div className="mt-5 space-y-5">
               {pageData?.all_sections?.map((data, index) => {
                 return (
-                  <button
-                    onClick={() => setActiveSection(data?.section_name)}
-                    className="block w-full"
+                  <div
+                    key={index}
+                    className={`  ${
+                      activeSection === data?.section_name
+                        ? "bg-[#FC8D0B] text-white"
+                        : "bg-white text-black"
+                    } w-full  rounded-lg flex justify-between items-center`}
                   >
-                    <h1
-                      className={` ${
-                        activeSection === data?.section_name
-                          ? "bg-[#FC8D0B] text-white"
-                          : "bg-white text-black"
-                      } w-full font-medium  p-3 rounded-lg text-left`}
+                    <button
+                      onClick={() => setActiveSection(data?.section_name)}
+                      className={`p-3 rounded-lg font-medium    `}
                     >
-                      {data?.section_name}
-                    </h1>
-                  </button>
+                      {data?.section_name === "Section 1"
+                        ? "Hero Section"
+                        : data?.section_name === "Section 2"
+                        ? "Banner Section"
+                        : data?.section_name}
+                    </button>
+                    {data?.section_type && (
+                      <div className=" rounded-lg font-medium relative">
+                        <div>
+                          <button
+                            onClick={() =>
+                              setBannerOptionDropdown(!bannerOptionDropdown)
+                            }
+                            className=" p-3 rounded-lg"
+                          >
+                            {data?.section_type} \/
+                          </button>
+                        </div>
+                        <div
+                          className={` ${
+                            bannerOptionDropdown ? "block" : "hidden"
+                          } absolute top-[110%] right-0 rounded-lg bg-white  w-max text-left text-black`}
+                        >
+                          <button
+                            onClick={() => {
+                              setBannerOptionDropdown(!bannerOptionDropdown);
+                            }}
+                            className="block p-3 px-4 hover:bg-slate-100 transition-all w-full text-left"
+                          >
+                            Full Screen Image
+                          </button>
+                          <button
+                            onClick={() => {
+                              setBannerOptionDropdown(!bannerOptionDropdown);
+                            }}
+                            className="block p-3 px-4 hover:bg-slate-100 transition-all w-full text-left"
+                          >
+                            Content
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
