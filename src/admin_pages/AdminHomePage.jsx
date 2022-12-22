@@ -11,6 +11,7 @@ const AdminHomePage = () => {
   const [activeSection, setActiveSection] = useState(null);
   const [bannerOptionDropdown, setBannerOptionDropdown] = useState(false);
   const [pageData, setPageData] = useState(null);
+  const [activeInput, setActiveInput] = useState(null);
 
   // const pageData = {
   //   pageName: "Home",
@@ -87,9 +88,17 @@ const AdminHomePage = () => {
     axios.get(VITE_BASE_LINK + "home_page").then((response) => {
       setActiveSection(response?.data?.all_sections[0]?.section_name);
       setPageData(response?.data);
-      console.log(response?.data);
     });
   }, []);
+
+  useEffect(() => {
+    console.log("pageData");
+    console.log(pageData);
+  }, [pageData]);
+
+  useEffect(() => {
+    console.log("activeSection:", activeSection?.split(" ")[1] - 1);
+  }, [activeSection]);
 
   const hiddenFileInput = React.useRef(null);
 
@@ -158,6 +167,39 @@ const AdminHomePage = () => {
                                 type="text"
                                 rows={5}
                                 value={sectionData?.content}
+                                onClick={() => setActiveInput(sectionData?.id)}
+                                onChange={(e) => {
+                                  const newState = data?.section_data?.map(
+                                    (obj) => {
+                                      if (obj.id === activeInput) {
+                                        return {
+                                          ...obj,
+                                          content: e?.target?.value,
+                                        };
+                                      }
+
+                                      return obj;
+                                    }
+                                  );
+
+                                  setPageData({
+                                    ...pageData,
+                                    all_sections: pageData?.all_sections?.map(
+                                      (data) => {
+                                        if (
+                                          data?.section_name === activeSection
+                                        ) {
+                                          return {
+                                            ...data,
+                                            section_data: newState,
+                                          };
+                                        }
+
+                                        return data;
+                                      }
+                                    ),
+                                  });
+                                }}
                                 className="w-full outline-none border-0"
                               />
                             </div>
@@ -180,23 +222,31 @@ const AdminHomePage = () => {
                               </div>
                             </div>
 
-                            <div className="mt-2 bg-white border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] relative ">
+                            <div className="mt-2 bg-white  border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] relative ">
                               <label
                                 onClick={handleClick}
                                 htmlFor="upload-image"
-                                className="flex flex-col  justify-center items-center h-full min-h-[200px] border cursor-pointer"
+                                className="flex flex-col  justify-center items-center h-full min-h-[200px] border cursor-pointer group transition-all"
                               >
                                 <img
                                   src={image_icon}
                                   alt="upload image"
-                                  className="w-[50px]"
+                                  className="w-[50px] hidden group-hover:block transition-all"
                                 />
-                                <h1 className="font-semibold">
+                                <h1 className="font-semibold hidden group-hover:block">
                                   <span className="text-[#FF440D] ">
                                     Upload an image
                                   </span>
                                 </h1>
-                                <h2>PNG, JPG, GIF up to 5MB</h2>
+                                <h2 className=" hidden group-hover:block">
+                                  PNG, JPG, GIF up to 5MB
+                                </h2>
+
+                                <img
+                                  src={VITE_BASE_LINK + sectionData?.content[0]}
+                                  alt=""
+                                  className=""
+                                />
                               </label>
                             </div>
                             <input
