@@ -12,6 +12,7 @@ const AdminHomePage = () => {
   const [bannerOptionDropdown, setBannerOptionDropdown] = useState(false);
   const [pageData, setPageData] = useState(null);
   const [activeInput, setActiveInput] = useState(null);
+  const [imageArray, setImageArray] = useState([]);
 
   // const pageData = {
   //   pageName: "Home",
@@ -92,13 +93,28 @@ const AdminHomePage = () => {
   }, []);
 
   useEffect(() => {
-    console.log("pageData");
-    console.log(pageData);
-  }, [pageData]);
+    setImageArray(
+      pageData?.all_sections
+        ?.filter((filteredData) => {
+          if (activeSection?.includes(filteredData?.section_name)) {
+            return filteredData;
+          }
+        })
+        ?.map((data, index) => {
+          return data?.section_data[3]?.content;
+        })
+    );
+  }, [activeSection]);
 
   useEffect(() => {
-    console.log("activeSection:", activeSection?.split(" ")[1] - 1);
-  }, [activeSection]);
+    console.log("new imageArray is below:");
+    console.log(imageArray);
+  }, [imageArray]);
+
+  useEffect(() => {
+    console.log("new pageData is below:");
+    console.log(pageData);
+  }, [pageData]);
 
   const hiddenFileInput = React.useRef(null);
 
@@ -106,6 +122,34 @@ const AdminHomePage = () => {
     console.log("clicked");
     hiddenFileInput.current.click();
   };
+
+  // useEffect(() => {
+  //   const newState = data?.section_data?.map((obj) => {
+  //     if (obj.id === activeInput) {
+  //       return {
+  //         ...obj,
+  //         content: [e.target.files[0]],
+  //         update: true,
+  //       };
+  //     }
+
+  //     return obj;
+  //   });
+
+  //   setPageData({
+  //     ...pageData,
+  //     all_sections: pageData?.all_sections?.map((data) => {
+  //       if (data?.section_name === activeSection) {
+  //         return {
+  //           ...data,
+  //           section_data: newState,
+  //         };
+  //       }
+
+  //       return data;
+  //     }),
+  //   });
+  // }, [activeSection]);
 
   return (
     <div className="bg-[#FFF6EB] min-h-screen font-inter">
@@ -120,7 +164,16 @@ const AdminHomePage = () => {
           </div>
 
           <div>
-            <button className="p-3 px-5 bg-[#FF440D] text-white rounded-lg transition-all active:scale-95 ">
+            <button
+              onClick={() => {
+                axios
+                  .put(VITE_BASE_LINK + "home_page", pageData)
+                  .then((response) => {
+                    console.log(response?.data);
+                  });
+              }}
+              className="p-3 px-5 bg-[#FF440D] text-white rounded-lg transition-all active:scale-95 "
+            >
               Publish Content
             </button>
           </div>
@@ -207,55 +260,385 @@ const AdminHomePage = () => {
                         );
                       } else if (sectionData?.type === "image") {
                         return (
-                          <div key={sectionIndex} className="my-10">
-                            <div className="flex items-center gap-5">
-                              <h1 className="font-semibold">
-                                {sectionData?.title}
-                              </h1>
+                          <>
+                            {sectionData?.content?.length > 1 ? (
+                              <div key={sectionIndex}>
+                                {/* left image */}
+                                <div className="my-10 ">
+                                  <div className="flex items-center gap-5">
+                                    <h1 className="font-semibold">
+                                      Left Image
+                                    </h1>
 
-                              <div className=" items-center gap-5 border-x border-x-[#E0E2E7] px-5 hidden ">
-                                <button className="font-bold">B</button>
-                                <button className="italic">I</button>
-                                <button className="underline underline-offset-4">
-                                  U
-                                </button>
+                                    <div className=" items-center gap-5 border-x border-x-[#E0E2E7] px-5 hidden ">
+                                      <button className="font-bold">B</button>
+                                      <button className="italic">I</button>
+                                      <button className="underline underline-offset-4">
+                                        U
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  <div className="mt-2 bg-white  border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] relative ">
+                                    <label
+                                      // onClick={handleClick}
+                                      htmlFor="upload-image"
+                                      className="flex flex-col  justify-center items-center h-full min-h-[200px] border cursor-pointer group transition-all relative "
+                                    >
+                                      <div className=" flex-col justify-center items-center absolute bg-black bg-opacity-95 inset-0 hidden group-hover:flex transition-all duration-[1000] ">
+                                        <img
+                                          src={image_icon}
+                                          alt="upload image"
+                                          className="w-[50px] block "
+                                        />
+                                        <h1 className="font-semibold block">
+                                          <span className="text-[#FF440D] ">
+                                            Upload an image
+                                          </span>
+                                        </h1>
+                                        <h2 className=" block text-white">
+                                          PNG, JPG, GIF up to 5MB
+                                        </h2>
+                                      </div>
+
+                                      <img
+                                        src={
+                                          VITE_BASE_LINK +
+                                          sectionData?.content[0]
+                                        }
+                                        alt=""
+                                        className=""
+                                      />
+                                      <input
+                                        // ref={hiddenFileInput}
+                                        className="opacity-100 inset-0 border-red-500 border"
+                                        id="upload-image"
+                                        type="file"
+                                        onClick={() =>
+                                          setActiveInput(sectionData?.id)
+                                        }
+                                        onChange={(e) => {
+                                          let formdata = new FormData();
+                                          formdata.append(
+                                            "file",
+                                            e?.target?.files[0]
+                                          );
+                                          formdata.append("index", 0);
+                                          formdata.append(
+                                            "image_array",
+                                            imageArray
+                                          );
+
+                                          axios
+                                            .post(
+                                              VITE_BASE_LINK + "newImageUpload",
+                                              formdata
+                                            )
+                                            .then((response) => {
+                                              const newState =
+                                                data?.section_data?.map(
+                                                  (obj) => {
+                                                    if (
+                                                      obj.id === activeInput
+                                                    ) {
+                                                      return {
+                                                        ...obj,
+                                                        content:
+                                                          response?.data
+                                                            ?.image_array,
+                                                      };
+                                                    }
+
+                                                    return obj;
+                                                  }
+                                                );
+
+                                              setPageData({
+                                                ...pageData,
+                                                all_sections:
+                                                  pageData?.all_sections?.map(
+                                                    (data) => {
+                                                      if (
+                                                        data?.section_name ===
+                                                        activeSection
+                                                      ) {
+                                                        return {
+                                                          ...data,
+                                                          section_data:
+                                                            newState,
+                                                        };
+                                                      }
+
+                                                      return data;
+                                                    }
+                                                  ),
+                                              });
+                                            });
+                                        }}
+                                      />
+                                    </label>
+                                  </div>
+                                  {/* <input
+                                    ref={hiddenFileInput}
+                                    className="hidden"
+                                    id="upload-image"
+                                    type="file"
+                                    onChange={(e) => {
+                                      setImageArray(() =>
+                                        imageArray.push(e?.target?.files[0])
+                                      );
+                                    }}
+                                  /> */}
+                                </div>
+
+                                {/* Right image */}
+                                <div className="my-10 ">
+                                  <div className="flex items-center gap-5">
+                                    <h1 className="font-semibold">
+                                      Right Image
+                                    </h1>
+
+                                    <div className=" items-center gap-5 border-x border-x-[#E0E2E7] px-5 hidden ">
+                                      <button className="font-bold">B</button>
+                                      <button className="italic">I</button>
+                                      <button className="underline underline-offset-4">
+                                        U
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  <div className="mt-2 bg-white  border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] relative ">
+                                    <label
+                                      // onClick={handleClick}
+                                      htmlFor="upload-image2"
+                                      className="flex flex-col  justify-center items-center h-full min-h-[200px] border cursor-pointer group transition-all relative "
+                                    >
+                                      <div className=" flex-col justify-center items-center absolute bg-black bg-opacity-95 inset-0 hidden group-hover:flex transition-all duration-[1000] ">
+                                        <img
+                                          src={image_icon}
+                                          alt="upload image"
+                                          className="w-[50px] block "
+                                        />
+                                        <h1 className="font-semibold block">
+                                          <span className="text-[#FF440D] ">
+                                            Upload an image
+                                          </span>
+                                        </h1>
+                                        <h2 className=" block text-white">
+                                          PNG, JPG, GIF up to 5MB
+                                        </h2>
+                                      </div>
+
+                                      <img
+                                        src={
+                                          VITE_BASE_LINK +
+                                          sectionData?.content[1]
+                                        }
+                                        alt=""
+                                        className=""
+                                      />
+                                      <input
+                                        // ref={hiddenFileInput}
+                                        className="opacity-100 inset-0 border-blue-500 border"
+                                        id="upload-image2"
+                                        type="file"
+                                        onClick={() =>
+                                          setActiveInput(sectionData?.id)
+                                        }
+                                        onChange={(e) => {
+                                          let formdata = new FormData();
+                                          console.log("I am here 1");
+                                          formdata.append(
+                                            "file",
+                                            e?.target?.files[0]
+                                          );
+                                          formdata.append("index", 1);
+                                          formdata.append(
+                                            "image_array",
+                                            imageArray
+                                          );
+                                          console.log("I am here 2");
+                                          axios
+                                            .post(
+                                              VITE_BASE_LINK + "newImageUpload",
+                                              formdata
+                                            )
+                                            .then((response) => {
+                                              const newState =
+                                                data?.section_data?.map(
+                                                  (obj) => {
+                                                    if (
+                                                      obj.id === activeInput
+                                                    ) {
+                                                      return {
+                                                        ...obj,
+                                                        content:
+                                                          response?.data
+                                                            ?.image_array,
+                                                      };
+                                                    }
+
+                                                    return obj;
+                                                  }
+                                                );
+
+                                              setPageData({
+                                                ...pageData,
+                                                all_sections:
+                                                  pageData?.all_sections?.map(
+                                                    (data) => {
+                                                      if (
+                                                        data?.section_name ===
+                                                        activeSection
+                                                      ) {
+                                                        return {
+                                                          ...data,
+                                                          section_data:
+                                                            newState,
+                                                        };
+                                                      }
+
+                                                      return data;
+                                                    }
+                                                  ),
+                                              });
+                                            });
+                                        }}
+                                      />
+                                    </label>
+                                  </div>
+                                  {/* <input
+                                    ref={hiddenFileInput}
+                                    className="hidden"
+                                    id="upload-image"
+                                    type="file"
+                                    onChange={(e) => {
+                                      setImageArray.push(e?.target?.files[0]);
+                                    }}
+                                  /> */}
+                                </div>
                               </div>
-                            </div>
+                            ) : (
+                              <div key={sectionIndex} className="my-10 ">
+                                <div className="flex items-center gap-5">
+                                  <h1 className="font-semibold">
+                                    {sectionData?.title}
+                                  </h1>
 
-                            <div className="mt-2 bg-white  border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] relative ">
-                              <label
-                                onClick={handleClick}
-                                htmlFor="upload-image"
-                                className="flex flex-col  justify-center items-center h-full min-h-[200px] border cursor-pointer group transition-all"
-                              >
-                                <img
-                                  src={image_icon}
-                                  alt="upload image"
-                                  className="w-[50px] hidden group-hover:block transition-all"
-                                />
-                                <h1 className="font-semibold hidden group-hover:block">
-                                  <span className="text-[#FF440D] ">
-                                    Upload an image
-                                  </span>
-                                </h1>
-                                <h2 className=" hidden group-hover:block">
-                                  PNG, JPG, GIF up to 5MB
-                                </h2>
+                                  <div className=" items-center gap-5 border-x border-x-[#E0E2E7] px-5 hidden ">
+                                    <button className="font-bold">B</button>
+                                    <button className="italic">I</button>
+                                    <button className="underline underline-offset-4">
+                                      U
+                                    </button>
+                                  </div>
+                                </div>
 
-                                <img
-                                  src={VITE_BASE_LINK + sectionData?.content[0]}
-                                  alt=""
-                                  className=""
-                                />
-                              </label>
-                            </div>
-                            <input
-                              ref={hiddenFileInput}
-                              className="hidden"
-                              id="upload-image"
-                              type="file"
-                            />
-                          </div>
+                                <div className="mt-2 bg-white  border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] relative ">
+                                  <label
+                                    // onClick={handleClick}
+                                    htmlFor="upload-image"
+                                    className="flex flex-col  justify-center items-center h-full min-h-[200px] border group transition-all relative "
+                                  >
+                                    <div className=" flex-col justify-center items-center absolute bg-black bg-opacity-95 inset-0 hidden group-hover:flex transition-all duration-[1000] ">
+                                      <img
+                                        src={image_icon}
+                                        alt="upload image"
+                                        className="w-[50px] block "
+                                      />
+                                      <h1 className="font-semibold block">
+                                        <span className="text-[#FF440D] ">
+                                          Upload an image
+                                        </span>
+                                      </h1>
+                                      <h2 className=" block text-white">
+                                        PNG, JPG, GIF up to 5MB
+                                      </h2>
+                                    </div>
+
+                                    <img
+                                      src={
+                                        VITE_BASE_LINK + sectionData?.content[0]
+                                      }
+                                      alt=""
+                                      className=""
+                                    />
+                                    <input
+                                      ref={hiddenFileInput}
+                                      className="opacity-100 absolute inset-0 border-green-500 border"
+                                      id="upload-image"
+                                      type="file"
+                                      onClick={() =>
+                                        setActiveInput(sectionData?.id)
+                                      }
+                                      onChange={(e) => {
+                                        let formdata = new FormData();
+                                        formdata.append(
+                                          "file",
+                                          e?.target?.files[0]
+                                        );
+                                        formdata.append("index", 0);
+                                        formdata.append(
+                                          "image_array",
+                                          imageArray
+                                        );
+
+                                        axios
+                                          .post(
+                                            VITE_BASE_LINK + "newImageUpload",
+                                            formdata
+                                          )
+                                          .then((response) => {
+                                            const newState =
+                                              data?.section_data?.map((obj) => {
+                                                if (obj.id === activeInput) {
+                                                  return {
+                                                    ...obj,
+                                                    content:
+                                                      response?.data
+                                                        ?.image_array,
+                                                  };
+                                                }
+
+                                                return obj;
+                                              });
+
+                                            setPageData({
+                                              ...pageData,
+                                              all_sections:
+                                                pageData?.all_sections?.map(
+                                                  (data) => {
+                                                    if (
+                                                      data?.section_name ===
+                                                      activeSection
+                                                    ) {
+                                                      return {
+                                                        ...data,
+                                                        section_data: newState,
+                                                      };
+                                                    }
+
+                                                    return data;
+                                                  }
+                                                ),
+                                            });
+                                          });
+                                      }}
+                                    />
+                                  </label>
+                                </div>
+                                {/* <input
+                                        ref={hiddenFileInput}
+                                        className="opacity-100 inset-0 border-red-500 border"
+                                        id="upload-image"
+                                        type="file"
+                                        onChange={(e) => {
+                                          setImageArray([e?.target?.files[0]]);
+                                        }}
+                                      /> */}
+                              </div>
+                            )}
+                          </>
                         );
                       }
                     })}
