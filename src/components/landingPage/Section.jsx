@@ -63,7 +63,8 @@ const Section = (props) => {
       {props?.apiData?.layout === "event" && (
         <section
           id="landing_page_2"
-          className="bg-[#FC8D0B]  pt-20 border-b-[12px] border-[#942200]  min-h-screen"
+          style={{ backgroundColor: props?.apiData?.background_color }}
+          className={"  pt-20 border-b-[12px] border-[#942200]  min-h-screen"}
         >
           <div className="flex flex-col gap-5 justify-between h-full">
             <div>
@@ -96,7 +97,8 @@ const Section = (props) => {
       {props?.apiData?.layout === "two_images" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#7CC0F1]  pt-20 border-b-[12px] border-[#942200]  md:h-screen "
+          style={{ backgroundColor: props?.apiData?.background_color }}
+          className="  pt-20 border-b-[12px] border-[#942200]  md:h-screen "
         >
           <div className="flex flex-col justify-between h-full  ">
             <div>
@@ -145,7 +147,8 @@ const Section = (props) => {
       {props?.apiData?.layout === "right_image" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#FFE600] pt-10 flex gap-5 flex-col  justify-between md:flex-row border-b-[9px] border-[#942200]  min-h-screen"
+          style={{ backgroundColor: props?.apiData?.background_color }}
+          className=" pt-10 flex gap-5 flex-col  justify-between md:flex-row border-b-[9px] border-[#942200]  min-h-screen"
         >
           <div className="flex justify-between flex-col  gap-5  py-20 w-full">
             <div className="">
@@ -211,7 +214,8 @@ const Section = (props) => {
       {props?.apiData?.layout === "left_image" && (
         <section
           id={props?.apiData?.seq_no}
-          className="bg-[#FFB507] pt-10 py-20 flex flex-col-reverse gap-5 min-h-screen md:flex-row-reverse border-b-[12px] border-[#942200]  justify-between "
+          style={{ backgroundColor: props?.apiData?.background_color }}
+          className=" pt-10 py-20 flex flex-col-reverse gap-5 min-h-screen md:flex-row-reverse border-b-[12px] border-[#942200]  justify-between "
         >
           <div className="flex justify-between flex-col gap-5 flex-1  ">
             <div className="md:py-20">

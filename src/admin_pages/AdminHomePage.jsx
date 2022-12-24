@@ -104,17 +104,17 @@ const AdminHomePage = () => {
           return data?.section_data[3]?.content;
         })
     );
+  }, [activeSection, pageData]);
+
+  // useEffect(() => {
+  //   console.log("new imageArray is below:");
+  //   console.log(imageArray);
+  // }, [imageArray]);
+
+  useEffect(() => {
+    console.log("new activeSection is below:");
+    console.log(activeSection);
   }, [activeSection]);
-
-  useEffect(() => {
-    console.log("new imageArray is below:");
-    console.log(imageArray);
-  }, [imageArray]);
-
-  useEffect(() => {
-    console.log("new pageData is below:");
-    console.log(pageData);
-  }, [pageData]);
 
   const hiddenFileInput = React.useRef(null);
 
@@ -122,34 +122,6 @@ const AdminHomePage = () => {
     console.log("clicked");
     hiddenFileInput.current.click();
   };
-
-  // useEffect(() => {
-  //   const newState = data?.section_data?.map((obj) => {
-  //     if (obj.id === activeInput) {
-  //       return {
-  //         ...obj,
-  //         content: [e.target.files[0]],
-  //         update: true,
-  //       };
-  //     }
-
-  //     return obj;
-  //   });
-
-  //   setPageData({
-  //     ...pageData,
-  //     all_sections: pageData?.all_sections?.map((data) => {
-  //       if (data?.section_name === activeSection) {
-  //         return {
-  //           ...data,
-  //           section_data: newState,
-  //         };
-  //       }
-
-  //       return data;
-  //     }),
-  //   });
-  // }, [activeSection]);
 
   return (
     <div className="bg-[#FFF6EB] min-h-screen font-inter">
@@ -311,7 +283,7 @@ const AdminHomePage = () => {
                                       />
                                       <input
                                         // ref={hiddenFileInput}
-                                        className="opacity-100 inset-0 border-red-500 border"
+                                        className="opacity-0 cursor-pointer inset-0 "
                                         id="upload-image"
                                         type="file"
                                         onClick={() =>
@@ -439,7 +411,7 @@ const AdminHomePage = () => {
                                       />
                                       <input
                                         // ref={hiddenFileInput}
-                                        className="opacity-100 inset-0 border-blue-500 border"
+                                        className="opacity-0 cursor-pointer inset-0 "
                                         id="upload-image2"
                                         type="file"
                                         onClick={() =>
@@ -447,7 +419,7 @@ const AdminHomePage = () => {
                                         }
                                         onChange={(e) => {
                                           let formdata = new FormData();
-                                          console.log("I am here 1");
+
                                           formdata.append(
                                             "file",
                                             e?.target?.files[0]
@@ -457,7 +429,7 @@ const AdminHomePage = () => {
                                             "image_array",
                                             imageArray
                                           );
-                                          console.log("I am here 2");
+
                                           axios
                                             .post(
                                               VITE_BASE_LINK + "newImageUpload",
@@ -565,7 +537,7 @@ const AdminHomePage = () => {
                                     />
                                     <input
                                       ref={hiddenFileInput}
-                                      className="opacity-100 absolute inset-0 border-green-500 border"
+                                      className="opacity-0 absolute cursor-pointer inset-0 "
                                       id="upload-image"
                                       type="file"
                                       onClick={() =>
@@ -640,7 +612,74 @@ const AdminHomePage = () => {
                             )}
                           </>
                         );
-                      }
+                      } else if (
+                        sectionData?.type === "color" &&
+                        data?.section_name != "Section 1"
+                      ) {
+                        return (
+                          <div key={sectionIndex} className="my-10 ">
+                            <div className="flex items-center gap-5">
+                              <h1 className="font-semibold">
+                                {sectionData?.title}
+                              </h1>
+
+                              <div className=" items-center gap-5 border-x border-x-[#E0E2E7] px-5 hidden ">
+                                <button className="font-bold">B</button>
+                                <button className="italic">I</button>
+                                <button className="underline underline-offset-4">
+                                  U
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="mt-2 bg-white  border p-3 space-y-3 rounded-lg h-full  border-[#E0E2E7] relative inline-block ">
+                              <h1 className="uppercase font-semibold">
+                                {sectionData?.content}
+                              </h1>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                className=""
+                                value={sectionData?.content}
+                                onClick={() => setActiveInput(sectionData?.id)}
+                                onChange={(e) => {
+                                  const newState = data?.section_data?.map(
+                                    (obj) => {
+                                      if (obj.id === activeInput) {
+                                        return {
+                                          ...obj,
+                                          content: e?.target?.value,
+                                        };
+                                      }
+
+                                      return obj;
+                                    }
+                                  );
+
+                                  setPageData({
+                                    ...pageData,
+                                    all_sections: pageData?.all_sections?.map(
+                                      (data) => {
+                                        if (
+                                          data?.section_name === activeSection
+                                        ) {
+                                          return {
+                                            ...data,
+                                            section_data: newState,
+                                          };
+                                        }
+
+                                        return data;
+                                      }
+                                    ),
+                                  });
+                                }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      } else "";
                     })}
                   </div>
                 );
