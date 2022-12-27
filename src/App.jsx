@@ -79,7 +79,7 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/home_edit/" element={<AdminHomePage />} />
             <Route
-              path="/admin/sub_admin_page/:sub_admin_page_name"
+              path="/admin/pages/:sub_admin_page_name"
               element={<AdminDashboard />}
             />
           </Route>

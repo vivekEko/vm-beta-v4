@@ -5,12 +5,12 @@ import Header from "../globalComponents/Header";
 import scroll_icon from "../../assets/img/landingPage/scroll_icon.png";
 import youtube_icon from "../../assets/img/landingPage/youtube_icon.png";
 import file_icon from "../../assets/img/landingPage/file_icon.png";
-import { HashRouter } from "react-router-dom";
+import { HashRouter, Link } from "react-router-dom";
 import { VITE_BASE_LINK } from "../../base_link/BaseLink";
 
 const Section = (props) => {
   return (
-    <div>
+    <div className="">
       {props?.apiData?.layout === "hero" && (
         <section id={props?.apiData?.seq_no} className=" overflow-y-hidden ">
           <div className="bg-hero-image    md:h-screen bg-fixed bg-center bg-no-repeat bg-cover border-b-[14px] border-b-[#942200] ">
@@ -167,28 +167,48 @@ const Section = (props) => {
             </div>
 
             <div className="hidden md:flex gap-5 items-start mt-5  w-[80%] mx-auto pb-5">
-              <div>
-                <img src={youtube_icon} alt="youtube" />
-                <h3 className="uppercase   sm:text-lg xl:text-xl">
-                  {props?.apiData?.yt_title}
-                </h3>
+              <div className="">
+                <a
+                  href={props?.apiData?.yt_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={youtube_icon} alt="youtube" />
+                  <h3 className="uppercase   sm:text-lg xl:text-xl">
+                    {props?.apiData?.yt_title}
+                  </h3>
+                </a>
               </div>
 
-              <div>
+              <a
+                href={
+                  VITE_BASE_LINK +
+                  "fileDownload?file_name=" +
+                  props?.apiData?.file_link
+                }
+                className="border block border-green-500"
+              >
                 <img src={file_icon} alt="file" className="" />
                 <h3 className="uppercase   sm:text-lg xl:text-xl">
                   {props?.apiData?.file_title}
                 </h3>
-              </div>
+              </a>
             </div>
           </div>
 
+          {/* mobile view */}
           <div className="flex gap-5  w-full">
             <div className="flex-1 pl-10 md:hidden">
-              <img src={youtube_icon} alt="youtube" />
-              <h3 className="uppercase  sm:text-lg xl:text-xl">
-                {props?.apiData?.yt_title}
-              </h3>
+              <a
+                href={props?.apiData?.yt_link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={youtube_icon} alt="youtube" />
+                <h3 className="uppercase  sm:text-lg xl:text-xl">
+                  {props?.apiData?.yt_title}
+                </h3>
+              </a>
 
               <img src={file_icon} alt="file" className="mt-5" />
               <h3 className="uppercase sm:text-lg xl:text-xl">

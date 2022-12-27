@@ -21,6 +21,7 @@ const AdminHomePage = () => {
   const [pageData, setPageData] = useState(null);
   const [activeInput, setActiveInput] = useState(null);
   const [imageArray, setImageArray] = useState([]);
+  const [fileArray, setFileArray] = useState([]);
   const [newSectionActiveLayout, setNewSectionActiveLayout] = useState({
     backend_name: "left_image",
     frontend_name: "Left Aligned",
@@ -128,27 +129,22 @@ const AdminHomePage = () => {
           return data?.section_data[3]?.content;
         })
     );
-  }, [activeSection, pageData]);
 
-  // useEffect(() => {
-  //   console.log(
-  //     "length :",
-  //     pageData?.all_sections[activeSection?.split(" ")[1]]?.section_data[5]
-  //       ?.content?.length
-  //   );
+    setFileArray(
+      pageData?.all_sections
+        ?.filter((filteredData) => {
+          if (activeSection?.includes(filteredData?.section_name)) {
+            return filteredData;
+          }
+        })
+        ?.map((data, index) => {
+          return data?.section_data[6]?.content;
+        })
+    );
 
-  //   console.log("activeSection :", activeSection?.split(" ")[1]);
-  // }, [activeSection]);
-
-  // useEffect(() => {
-  //   console.log("new imageArray is below:");
-  //   console.log(imageArray);
-  // }, [imageArray]);
-
-  useEffect(() => {
-    console.log("new pageData is below:");
+    console.log("##############  PAGE DATA ####################:");
     console.log(pageData);
-  }, [pageData]);
+  }, [activeSection, pageData]);
 
   const hiddenFileInput = React.useRef(null);
 
@@ -158,9 +154,9 @@ const AdminHomePage = () => {
   };
 
   return (
-    <div className="bg-[#FFF6EB] min-h-screen font-inter">
+    <div className="bg-[#FFF6EB] min-h-screen font-inter pb-52">
       <Admin_header />
-      <div className="px-16  ">
+      <div className="px-16">
         <div className="flex justify-between items-center py-10  sticky  top-24 bg-[#FFF6EB]">
           <div></div>
           <div>
@@ -190,7 +186,7 @@ const AdminHomePage = () => {
           <div className="w-full  pt-10 ">
             {pageData?.all_sections
               ?.filter((filteredData) => {
-                if (activeSection?.includes(filteredData?.section_name)) {
+                if (activeSection === filteredData?.section_name) {
                   return filteredData;
                 }
               })
@@ -200,7 +196,7 @@ const AdminHomePage = () => {
                     {data?.section_data?.map((sectionData, sectionIndex) => {
                       if (
                         sectionData?.type === "text" &&
-                        sectionData?.content?.length !== 0
+                        sectionData?.link_status == true
                       ) {
                         return (
                           <div
@@ -268,7 +264,7 @@ const AdminHomePage = () => {
                       if (sectionData?.type === "image") {
                         return (
                           <>
-                            {sectionData?.content?.length > 1 ? (
+                            {sectionData?.link_status == true > 1 ? (
                               <div key={sectionIndex}>
                                 {/* left image */}
                                 <div className="my-10 ">
@@ -514,15 +510,6 @@ const AdminHomePage = () => {
                                       />
                                     </label>
                                   </div>
-                                  {/* <input
-                                    ref={hiddenFileInput}
-                                    className="hidden"
-                                    id="upload-image"
-                                    type="file"
-                                    onChange={(e) => {
-                                      setImageArray.push(e?.target?.files[0]);
-                                    }}
-                                  /> */}
                                 </div>
                               </div>
                             ) : (
@@ -650,7 +637,7 @@ const AdminHomePage = () => {
                       }
                       if (
                         sectionData?.type === "color" &&
-                        data?.section_name != "Section 1"
+                        sectionData?.link_status == true
                       ) {
                         return (
                           <div key={sectionIndex} className="my-10 ">
@@ -719,7 +706,7 @@ const AdminHomePage = () => {
 
                       if (
                         sectionData?.type === "yt_link" &&
-                        sectionData?.link_status
+                        sectionData?.link_status == true
                       ) {
                         return (
                           <div key={sectionIndex} className="my-10 ">
@@ -824,7 +811,7 @@ const AdminHomePage = () => {
                       }
                       if (
                         sectionData?.type === "file" &&
-                        sectionData?.link_status
+                        sectionData?.link_status == true
                       ) {
                         return (
                           <div key={sectionIndex} className="my-10 ">
@@ -885,43 +872,69 @@ const AdminHomePage = () => {
 
                             <div className="mt-5 relative  ">
                               <input
-                                className="  outline-none w-full placeholder:text-sm placeholder:font-normal "
+                                id="pdf-upload"
                                 type="file"
-                                value={sectionData?.content}
+                                className="  outline-none w-full placeholder:text-sm placeholder:font-normal hidden"
                                 onClick={() => setActiveInput(sectionData?.id)}
                                 onChange={(e) => {
-                                  const newState = data?.section_data?.map(
-                                    (obj) => {
-                                      if (obj.id === activeInput) {
-                                        return {
-                                          ...obj,
-                                          content: e?.target?.value,
-                                        };
-                                      }
+                                  let formdata = new FormData();
+                                  formdata.append("file", e?.target?.files[0]);
+                                  formdata.append("index", 0);
+                                  formdata.append("image_array", fileArray);
 
-                                      return obj;
-                                    }
-                                  );
+                                  axios
+                                    .post(
+                                      VITE_BASE_LINK + "newImageUpload",
+                                      formdata
+                                    )
+                                    .then((response) => {
+                                      console.log(response?.data);
+                                      const newState = data?.section_data?.map(
+                                        (obj) => {
+                                          if (obj.id === activeInput) {
+                                            return {
+                                              ...obj,
+                                              content:
+                                                response?.data?.image_array,
+                                            };
+                                          }
 
-                                  setPageData({
-                                    ...pageData,
-                                    all_sections: pageData?.all_sections?.map(
-                                      (data) => {
-                                        if (
-                                          data?.section_name === activeSection
-                                        ) {
-                                          return {
-                                            ...data,
-                                            section_data: newState,
-                                          };
+                                          return obj;
                                         }
+                                      );
 
-                                        return data;
-                                      }
-                                    ),
-                                  });
+                                      setPageData({
+                                        ...pageData,
+                                        all_sections:
+                                          pageData?.all_sections?.map(
+                                            (data) => {
+                                              if (
+                                                data?.section_name ===
+                                                activeSection
+                                              ) {
+                                                return {
+                                                  ...data,
+                                                  section_data: newState,
+                                                };
+                                              }
+
+                                              return data;
+                                            }
+                                          ),
+                                      });
+                                    });
                                 }}
                               />
+                              <label
+                                htmlFor="pdf-upload"
+                                className="rounded-md bg-[#FF440D] p-3 px-5 text-white cursor-pointer"
+                              >
+                                Upload file
+                              </label>
+
+                              <span className="px-5 ">
+                                {sectionData?.content[0]}
+                              </span>
                             </div>
                           </div>
                         );
@@ -1100,7 +1113,7 @@ const AdminHomePage = () => {
             <div className="mt-10">
               <h1 className="font-semibold">Add Section</h1>
               <div className="flex  gap-5 mt-5">
-                <div className="w-full relative">
+                <div className="w-full relative ">
                   <button
                     onClick={() => setLayoutFilterStatus(!layoutFilterStatus)}
                     className="w-full text-left border rounded-md bg-white p-3 flex justify-between items-center"
@@ -1155,7 +1168,9 @@ const AdminHomePage = () => {
                       .get(VITE_BASE_LINK + "home_page")
                       .then((response) => {
                         setActiveSection(
-                          response?.data?.all_sections[0]?.section_name
+                          response?.data?.all_sections[
+                            response?.data?.all_sections?.length - 1
+                          ]?.section_name
                         );
                         setPageData(response?.data);
                       });
