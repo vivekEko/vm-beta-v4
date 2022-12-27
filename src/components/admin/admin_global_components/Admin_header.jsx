@@ -7,12 +7,12 @@ import view_site from "../../../assets/img/admin/header/view-site.svg";
 
 const Admin_header = () => {
   return (
-    <header className="flex justify-between items-center p-5  bg-[#feddb5]  px-16 sticky top-0 z-[10060] ">
-      <div></div>
-      <div>
-        <img src={header_img} alt="..." />
+    <header className="flex justify-between items-center p-5   bg-[#feddb5]  px-16 sticky top-0 z-[10060] ">
+      <div className="flex-1"></div>
+      <div className=" flex-1">
+        <img src={header_img} alt="..." className="mx-auto" />
       </div>
-      <div>
+      <div className="flex-1">
         {localStorage.getItem("token") && (
           <Link to={"/"} target="_blank">
             <button className="flex gap-2 tracking-wider group">
