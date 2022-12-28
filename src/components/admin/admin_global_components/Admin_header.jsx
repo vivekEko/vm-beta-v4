@@ -12,9 +12,9 @@ const Admin_header = () => {
       <div className=" flex-1">
         <img src={header_img} alt="..." className="mx-auto" />
       </div>
-      <div className="flex-1">
+      <div className="flex-1 flex justify-end items-center">
         {localStorage.getItem("token") && (
-          <Link to={"/"} target="_blank">
+          <Link to={"/"} target="_blank" className="ml-auto  ">
             <button className="flex gap-2 tracking-wider group">
               <span className="group-hover:underline underline-offset-4 transition-all">
                 View Site

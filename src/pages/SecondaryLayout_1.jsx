@@ -131,7 +131,13 @@ const SecondaryLayout_1 = () => {
   return (
     <section>
       {/* banner */}
-      <div className="bg-[#D9D9D9] ">
+      <div
+        className="bg-[#D9D9D9] bg-no-repeat bg-cover"
+        style={{
+          backgroundImage:
+            "url(" + VITE_BASE_LINK + pageData?.banner?.image + ")",
+        }}
+      >
         <Header_2 />
 
         <div className="w-[90%] mx-auto">

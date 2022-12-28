@@ -24,6 +24,7 @@ import ProtectedFromAdmin from "./utils/routing/ProtectedFromAdmin";
 import Admin_sidebar from "./components/admin/admin_global_components/Admin_sidebar";
 import AdminHomePage from "./admin_pages/AdminHomePage";
 import AdminMainPageLayout1 from "./admin_pages/AdminMainPageLayout1";
+import AdminSubPageLayout1 from "./admin_pages/AdminSubPageLayout1";
 
 function App() {
   const [currentPath, setCurrentPath] = useRecoilState(currentPathAtom);
@@ -71,7 +72,6 @@ function App() {
             element={<SecondaryLayout_4 />}
           />
           <Route path="/jeeyars" element={<SecondaryLayout_5 />} />
-          <Route path="/admin/example" element={<AdminMainPageLayout1 />} />
 
           <Route element={<ProtectedRoutes />}>
             <Route
@@ -81,8 +81,13 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/home_edit/" element={<AdminHomePage />} />
             <Route
-              path="/admin/pages/:sub_admin_page_name"
-              element={<AdminDashboard />}
+              path="/admin/sub_admin_page/:sub_admin_page_name"
+              element={<AdminMainPageLayout1 />}
+            />
+
+            <Route
+              path="/admin/sub_admin_page/:sub_admin_page_name/:sub_page_id"
+              element={<AdminSubPageLayout1 />}
             />
           </Route>
 
