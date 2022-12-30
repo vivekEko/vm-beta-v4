@@ -21,8 +21,6 @@ const AdminMainPageLayout1 = () => {
   const pathname = useParams(null);
 
   useEffect(() => {
-    // setPageData(pageData2);
-    console.log(pathname?.sub_admin_page_name);
     axios
       .get(VITE_BASE_LINK + pathname?.sub_admin_page_name)
       .then((response) => {
@@ -30,10 +28,6 @@ const AdminMainPageLayout1 = () => {
         setImageArray(response?.data?.all_input_fields[1]?.content);
       });
   }, []);
-
-  useEffect(() => {
-    console.log("pageData:", pageData);
-  }, [pageData]);
 
   return (
     <div className="bg-[#FFF6EB] min-h-screen font-inter pb-52">

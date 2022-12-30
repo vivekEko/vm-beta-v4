@@ -11,6 +11,8 @@ import eye_close_inactive from "../assets/img/admin/home_edit/eye_close.svg";
 import eye_close_active from "../assets/img/admin/home_edit/eye_close_active.svg";
 import { useEffect } from "react";
 import { VITE_BASE_LINK } from "../base_link/BaseLink";
+import axios, { all } from "axios";
+import { useParams } from "react-router-dom";
 
 const AdminSubPageLayout1 = () => {
   const pageData2 = {
@@ -39,8 +41,19 @@ const AdminSubPageLayout1 = () => {
           {
             id: 3,
             title: "Brief Info",
-            content:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pellentesque quam vitae ornare porta. Vivamus pretium eleifend risus laoreet pretium. Ut sit amet finibus metus, nec cursus lacus.",
+
+            content: [
+              {
+                id: 245,
+                input_data: "lorem ipsum",
+                data_type: "text",
+              },
+              {
+                id: 246,
+                input_data: "lorem ipsum",
+                data_type: "image",
+              },
+            ],
             type: "text",
             link_status: true,
           },
@@ -98,8 +111,18 @@ const AdminSubPageLayout1 = () => {
           {
             id: 10,
             title: "Brief Info",
-            content:
-              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.",
+            content: [
+              {
+                id: 245,
+                input_data: "lorem ipsum",
+                data_type: "text",
+              },
+              {
+                id: 246,
+                input_data: "lorem ipsum",
+                data_type: "image",
+              },
+            ],
             type: "text",
             link_status: true,
           },
@@ -142,24 +165,71 @@ const AdminSubPageLayout1 = () => {
   const [activeTab, setActiveTab] = useState("Tab 1");
   const [activeInput, setActiveInput] = useState(0);
   const [imageArray, setImageArray] = useState([]);
+  const [briefData, setBriefData] = useState([]);
+
+  const location = useParams();
 
   useEffect(() => {
-    setPageData(pageData2);
-    setImageArray(
-      pageData?.all_tabs
-        ?.filter((filteredData) => {
-          if (activeTab?.includes(filteredData?.tab_name)) {
-            return filteredData;
-          }
-        })
-        ?.map((data, index) => {
-          return data?.tab_data[3]?.content;
-        })
-    );
+    axios
+      .get(
+        VITE_BASE_LINK +
+          location?.sub_admin_page_name +
+          "?page_id=" +
+          location?.sub_page_id
+      )
+      .then((response) => {
+        setActiveTab(response?.data?.all_tabs[0]?.tab_name);
+        setPageData(response?.data);
+
+        setImageArray(
+          response?.data?.all_tabs
+            ?.filter((filteredData) => {
+              if (activeTab?.includes(filteredData?.tab_name)) {
+                return filteredData;
+              }
+            })
+            ?.map((data) => {
+              return data?.tab_data[3]?.content;
+            })
+        );
+      });
   }, []);
 
   useEffect(() => {
-    console.log("######### PAGE DATA ##########", pageData);
+    setBriefData(
+      pageData?.all_tabs
+        ?.filter((filter_data) => {
+          if (filter_data?.tab_name === activeTab) {
+            return filter_data;
+          }
+        })
+        ?.map((data) => {
+          return data?.tab_data[0];
+        })
+    );
+  }, [activeTab]);
+
+  useEffect(() => {
+    setPageData({
+      ...pageData,
+      all_tabs: pageData?.all_tabs?.map((data) => {
+        if (activeTab === data?.tab_name) {
+          return {
+            ...data,
+            tab_data: briefData,
+          };
+        }
+        return data;
+      }),
+    });
+  }, [briefData]);
+
+  useEffect(() => {
+    console.log("####### briefData  #####", briefData);
+  }, [briefData]);
+
+  useEffect(() => {
+    console.log("####### pageData  #####", pageData);
   }, [pageData]);
 
   return (
@@ -167,7 +237,7 @@ const AdminSubPageLayout1 = () => {
       <Admin_header />
 
       <div className="px-16">
-        <div className="flex justify-between items-center py-10  sticky  top-24 bg-[#FFF6EB]">
+        <div className="flex justify-between items-center py-10  sticky  top-24 z-50 bg-[#FFF6EB]">
           <div className="flex-1"></div>
           <div className="flex-1 text-center">
             <h1 className="text-3xl uppercase font-bold ">
@@ -177,13 +247,19 @@ const AdminSubPageLayout1 = () => {
 
           <div className="flex-1">
             <button
-              //   onClick={() => {
-              //     axios
-              //       .put(VITE_BASE_LINK + "home_page", pageData)
-              //       .then((response) => {
-              //         console.log(response?.data);
-              //       });
-              //   }}
+              onClick={() => {
+                axios
+                  .post(
+                    VITE_BASE_LINK +
+                      location?.sub_admin_page_name +
+                      "?page_id=" +
+                      location?.sub_page_id,
+                    pageData
+                  )
+                  .then((response) => {
+                    console.log(response?.data);
+                  });
+              }}
               className="p-3 px-5 bg-[#FF440D] text-white rounded-lg transition-all active:scale-95 block ml-auto"
             >
               Publish Content
@@ -191,258 +267,277 @@ const AdminSubPageLayout1 = () => {
           </div>
         </div>
 
-        <h2 className="text-center text-xl font-oswald ">
+        <h2 className="text-center text-xl font-oswald sticky  top-48 z-50">
           {pageData?.subPageName}
         </h2>
 
-        <div className=" mt-10 flex gap-5">
-          {/* input fields */}
-          <div className="w-full flex-1 ">
-            <div className="w-full  pt-10  ">
-              {pageData?.all_tabs
-                ?.filter((filteredData) => {
-                  if (activeTab === filteredData?.tab_name) {
-                    return filteredData;
-                  }
-                })
-                ?.map((data, index) => {
+        <div className=" mt-10 flex items-start gap-5 text-[#232325] ">
+          <div className="w-full">
+            {/* Heading */}
+            <div className="bg-white p-5 rounded-lg mb-5 border-[#E0E2E7] border">
+              <div className="flex items-center gap-5  border-b-[#E0E2E7] border-b pb-5">
+                <h1 className="font-semibold">Heading</h1>
+              </div>
+
+              <div className="mt-5">
+                <textarea
+                  type="text"
+                  rows={5}
+                  value={pageData?.heading}
+                  onClick={() => setActiveInput(pageData?.tab_id)}
+                  onChange={(e) => {
+                    setPageData({
+                      ...pageData,
+                      heading: e?.target?.value,
+                    });
+                  }}
+                  className="w-full outline-none border-0"
+                />
+              </div>
+            </div>
+
+            {/* subheading */}
+            <div className="bg-white p-5 rounded-lg mb-5 border-[#E0E2E7] border">
+              <div className="flex items-center gap-5  border-b-[#E0E2E7] border-b pb-5">
+                <h1 className="font-semibold">Sub Heading</h1>
+              </div>
+
+              <div className="mt-5">
+                <textarea
+                  type="text"
+                  rows={5}
+                  value={pageData?.subheading}
+                  onClick={() => setActiveInput(pageData?.tab_id)}
+                  onChange={(e) => {
+                    setPageData({
+                      ...pageData,
+                      subheading: e?.target?.value,
+                    });
+                  }}
+                  className="w-full outline-none border-0"
+                />
+              </div>
+            </div>
+
+            {/* image */}
+            <div className="my-10 ">
+              <div className="flex items-center gap-5">
+                <h1 className="font-semibold">Cover Image</h1>
+              </div>
+              <div className="mt-2 bg-white  border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] ">
+                <label
+                  // onClick={handleClick}
+                  htmlFor="upload-image"
+                  className="flex flex-col  justify-center items-center h-full min-h-[200px] border cursor-pointer group transition-all relative z-20"
+                >
+                  <div className=" flex-col justify-center items-center absolute bg-black bg-opacity-95 inset-0 hidden group-hover:flex transition-all duration-[1000] ">
+                    <img
+                      src={image_icon}
+                      alt="upload image"
+                      className="w-[50px] block "
+                    />
+                    <h1 className="font-semibold block">
+                      <span className="text-[#FF440D] ">Upload an image</span>
+                    </h1>
+                    <h2 className=" block text-white">
+                      PNG, JPG, GIF up to 5MB
+                    </h2>
+                  </div>
+
+                  <img
+                    src={VITE_BASE_LINK + pageData?.cover_image}
+                    alt=""
+                    className=""
+                  />
+                  <input
+                    // ref={hiddenFileInput}
+                    className="opacity-0 cursor-pointer inset-0 "
+                    id="upload-image"
+                    type="file"
+                    // onClick={() =>
+                    //   setActiveInput(
+                    //     data_contents?.id
+                    //   )
+                    // }
+                    // onChange={(e) => {
+                    //   let formdata = new FormData();
+                    //   formdata.append(
+                    //     "file",
+                    //     e?.target?.files[0]
+                    //   );
+                    //   formdata.append("index", 0);
+                    //   formdata.append(
+                    //     "image_array",
+                    //     imageArray
+                    //   );
+
+                    //   axios
+                    //     .post(
+                    //       VITE_BASE_LINK +
+                    //         "newImageUpload",
+                    //       formdata
+                    //     )
+                    //     .then((response) => {
+                    //       const newState =
+                    //         data?.tab_data?.map(
+                    //           (obj) => {
+                    //             return {
+                    //               ...obj,
+                    //               content:
+                    //                 obj?.content?.map(
+                    //                   (obj2) => {
+                    //                     if (
+                    //                       activeInput ===
+                    //                       obj2?.id
+                    //                     ) {
+                    //                       return {
+                    //                         ...obj2,
+                    //                         input_data:
+                    //                           response
+                    //                             ?.data
+                    //                             ?.array,
+                    //                       };
+                    //                     }
+                    //                     return obj2;
+                    //                   }
+                    //                 ),
+                    //             };
+                    //           }
+                    //         );
+
+                    //       setPageData({
+                    //         ...pageData,
+                    //         all_tabs:
+                    //           pageData?.all_tabs?.map(
+                    //             (data) => {
+                    //               if (
+                    //                 data?.tab_name ===
+                    //                 activeTab
+                    //               ) {
+                    //                 return {
+                    //                   ...data,
+                    //                   tab_data:
+                    //                     newState,
+                    //                 };
+                    //               }
+
+                    //               return data;
+                    //             }
+                    //           ),
+                    //       });
+                    //     });
+                    // }}
+                  />
+                </label>
+              </div>
+            </div>
+
+            {/* input fields */}
+            <div className="w-full bg-white p-5 rounded-lg mb-5 border-[#E0E2E7] border ">
+              <div className="flex items-center justify-between gap-5  border-b-[#E0E2E7] border-b pb-5">
+                <div>
+                  <h1 className="font-semibold">Brief Info</h1>
+                </div>
+
+                <div className=" flex items-center gap-5 ">
+                  <button
+                    onClick={() => {
+                      const formdata = new FormData();
+                      formdata?.append("id", pageData?.new_id);
+                      formdata?.append("type", "text");
+                      formdata?.append("dataArray", JSON.stringify(briefData));
+
+                      axios
+                        .post(VITE_BASE_LINK + "adminAddNewTabData", formdata)
+                        .then((response) => {
+                          console.log("response", response);
+                          setBriefData(response?.data);
+                          setPageData({
+                            ...pageData,
+                            new_id: pageData?.new_id + 1,
+                          });
+                        });
+                    }}
+                    className="p-3 px-5 border-gray-500 hover:border-transparent border hover:bg-[#FF440D] hover:text-white rounded-lg transition-all active:scale-95"
+                  >
+                    Add Text
+                  </button>
+
+                  <lable
+                    htmlFor="image_upload_tab"
+                    className="p-3 px-5 border-gray-500 hover:border-transparent border hover:bg-[#FF440D] hover:text-white rounded-lg transition-all active:scale-95 relative cursor-pointer block"
+                  >
+                    Add Image
+                    <input
+                      type="file"
+                      id="image_upload_tab"
+                      className="inset-0 absolute  opacity-0 cursor-pointer"
+                      onChange={(e) => {
+                        const formdata = new FormData();
+                        formdata?.append("file", e?.target?.files[0]);
+                        formdata?.append("id", pageData?.new_id);
+                        formdata?.append("type", "image");
+                        formdata?.append(
+                          "dataArray",
+                          JSON.stringify(briefData)
+                        );
+
+                        axios
+                          .post(
+                            VITE_BASE_LINK + "addImageTabDataAdmin",
+                            formdata
+                          )
+                          .then((response) => {
+                            console.log("response", response);
+                            setBriefData(response?.data);
+                            setPageData({
+                              ...pageData,
+                              new_id: pageData?.new_id + 1,
+                            });
+                          });
+                      }}
+                    />
+                  </lable>
+                </div>
+              </div>
+              <div className="w-full  pt-10  ">
+                {briefData?.map((data, index) => {
                   return (
                     <div key={index} className="">
-                      {data?.tab_data?.map((tabDatas, tabIndex) => {
-                        if (
-                          tabDatas?.type === "text" &&
-                          tabDatas?.link_status == true &&
-                          tabDatas?.title !== "Brief Info"
-                        ) {
-                          return (
-                            <div
-                              key={tabIndex}
-                              className="bg-white p-5 rounded-lg mb-5 border-[#E0E2E7] border"
-                            >
-                              <div className="flex items-center gap-5  border-b-[#E0E2E7] border-b pb-5">
-                                <h1 className="font-semibold">
-                                  {tabDatas?.title}
-                                </h1>
-                              </div>
+                      {data?.type === "text" && (
+                        <div className="bg-white p-5 rounded-lg mb-5 ">
+                          <textarea
+                            type="text"
+                            rows={10}
+                            value={data?.data}
+                            onClick={() => setActiveInput(data?.id)}
+                            onChange={(e) => {
+                              setBriefData(
+                                briefData?.map((datas) => {
+                                  if (activeInput === datas?.id) {
+                                    return {
+                                      ...datas,
+                                      data: e?.target?.value,
+                                    };
+                                  }
+                                  return datas;
+                                })
+                              );
+                            }}
+                            className="w-full outline-none border my-5"
+                          />
+                        </div>
+                      )}
 
-                              <div className="mt-5">
-                                <textarea
-                                  type="text"
-                                  rows={5}
-                                  value={tabDatas?.content}
-                                  onClick={() => setActiveInput(tabDatas?.id)}
-                                  onChange={(e) => {
-                                    const newState = data?.tab_data?.map(
-                                      (obj) => {
-                                        if (obj.id === activeInput) {
-                                          return {
-                                            ...obj,
-                                            content: e?.target?.value,
-                                          };
-                                        }
-
-                                        return obj;
-                                      }
-                                    );
-
-                                    setPageData({
-                                      ...pageData,
-                                      all_tabs: pageData?.all_tabs?.map(
-                                        (data) => {
-                                          if (data?.tab_name === activeTab) {
-                                            return {
-                                              ...data,
-                                              tab_data: newState,
-                                            };
-                                          }
-
-                                          return data;
-                                        }
-                                      ),
-                                    });
-                                  }}
-                                  className="w-full outline-none border-0"
-                                />
-                              </div>
-                            </div>
-                          );
-                        }
-
-                        // #############################
-                        if (
-                          tabDatas?.type === "text" &&
-                          tabDatas?.link_status == true &&
-                          tabDatas?.title === "Brief Info"
-                        ) {
-                          return (
-                            <div
-                              key={tabIndex}
-                              className="bg-white p-5 rounded-lg mb-5  border border-red-500"
-                            >
-                              <div className="flex items-center gap-5  border-b-[#E0E2E7] border-b pb-5">
-                                <h1 className="font-semibold">
-                                  {tabDatas?.title}
-                                </h1>
-                              </div>
-
-                              <div className="mt-5">
-                                <textarea
-                                  type="text"
-                                  rows={5}
-                                  value={tabDatas?.content}
-                                  onClick={() => setActiveInput(tabDatas?.id)}
-                                  onChange={(e) => {
-                                    const newState = data?.tab_data?.map(
-                                      (obj) => {
-                                        if (obj.id === activeInput) {
-                                          return {
-                                            ...obj,
-                                            content: e?.target?.value,
-                                          };
-                                        }
-
-                                        return obj;
-                                      }
-                                    );
-
-                                    setPageData({
-                                      ...pageData,
-                                      all_tabs: pageData?.all_tabs?.map(
-                                        (data) => {
-                                          if (data?.tab_name === activeTab) {
-                                            return {
-                                              ...data,
-                                              tab_data: newState,
-                                            };
-                                          }
-
-                                          return data;
-                                        }
-                                      ),
-                                    });
-                                  }}
-                                  className="w-full outline-none border-0"
-                                />
-                              </div>
-                            </div>
-                          );
-                        }
-
-                        //   ###################################
-
-                        if (tabDatas?.type === "image") {
-                          return (
-                            <>
-                              {tabDatas?.link_status === true && (
-                                <div className="my-10 ">
-                                  <div className="flex items-center gap-5">
-                                    <h1 className="font-semibold">
-                                      Left Side Cover Image
-                                    </h1>
-                                  </div>
-
-                                  <div className="mt-2 bg-white  border border-dashed rounded-lg h-full min-h-[200px] border-[#E0E2E7] relative ">
-                                    <label
-                                      // onClick={handleClick}
-                                      htmlFor="upload-image"
-                                      className="flex flex-col  justify-center items-center h-full min-h-[200px] border cursor-pointer group transition-all relative "
-                                    >
-                                      <div className=" flex-col justify-center items-center absolute bg-black bg-opacity-95 inset-0 hidden group-hover:flex transition-all duration-[1000] ">
-                                        <img
-                                          src={image_icon}
-                                          alt="upload image"
-                                          className="w-[50px] block "
-                                        />
-                                        <h1 className="font-semibold block">
-                                          <span className="text-[#FF440D] ">
-                                            Upload an image
-                                          </span>
-                                        </h1>
-                                        <h2 className=" block text-white">
-                                          PNG, JPG, GIF up to 5MB
-                                        </h2>
-                                      </div>
-
-                                      <img
-                                        src={
-                                          VITE_BASE_LINK + tabDatas?.content[0]
-                                        }
-                                        alt=""
-                                        className=""
-                                      />
-                                      <input
-                                        // ref={hiddenFileInput}
-                                        className="opacity-0 cursor-pointer inset-0 "
-                                        id="upload-image"
-                                        type="file"
-                                        onClick={() =>
-                                          setActiveInput(tabDatas?.id)
-                                        }
-                                        onChange={(e) => {
-                                          let formdata = new FormData();
-                                          formdata.append(
-                                            "file",
-                                            e?.target?.files[0]
-                                          );
-                                          formdata.append("index", 0);
-                                          formdata.append(
-                                            "image_array",
-                                            imageArray
-                                          );
-
-                                          axios
-                                            .post(
-                                              VITE_BASE_LINK + "newImageUpload",
-                                              formdata
-                                            )
-                                            .then((response) => {
-                                              const newState =
-                                                data?.tab_data?.map((obj) => {
-                                                  if (obj.id === activeInput) {
-                                                    return {
-                                                      ...obj,
-                                                      content:
-                                                        response?.data
-                                                          ?.image_array,
-                                                    };
-                                                  }
-
-                                                  return obj;
-                                                });
-
-                                              setPageData({
-                                                ...pageData,
-                                                all_tabs:
-                                                  pageData?.all_tabs?.map(
-                                                    (data) => {
-                                                      if (
-                                                        data?.tab_name ===
-                                                        activeTab
-                                                      ) {
-                                                        return {
-                                                          ...data,
-                                                          tab_data: newState,
-                                                        };
-                                                      }
-
-                                                      return data;
-                                                    }
-                                                  ),
-                                              });
-                                            });
-                                        }}
-                                      />
-                                    </label>
-                                  </div>
-                                </div>
-                              )}
-                            </>
-                          );
-                        }
-                      })}
+                      {data?.type === "image" && (
+                        <div className="bg-white p-5 rounded-lg mb-5 ">
+                          <img src={VITE_BASE_LINK + data?.data} alt="" />
+                        </div>
+                      )}
                     </div>
                   );
                 })}
+              </div>
             </div>
           </div>
 
